@@ -13,31 +13,55 @@ datasource db {
 }
 
 model Employee {
-  id Int  @id @default(autoincrement())
-  name String 
-  email String @unique
-  role  Role @default(USER)
-  phone String? 
-  username String @db.VarChar(255)
-  hashPassword String @db.VarChar(255)
+  id           Int     @id @default(autoincrement())
+  name         String
+  email        String  @unique
+  role         Role    @default(USER)
+  phone        String?
+  username     String  @db.VarChar(255)
+  hashPassword String  @db.VarChar(255)
+  jobs         Job[]
 
   @@map("employee")
 }
 
 model Client {
-  id Int @id @default(autoincrement())
-  name String
-  email String @unique
-  phoneNumber String 
-  address String
+  id          Int    @id @default(autoincrement())
+  name        String
+  email       String @unique
+  phoneNumber String
+  address     String
+  jobs        Job[]
 
   @@map("client")
 }
 
+model Job {
+  id         Int      @id @default(autoincrement())
+  desc       String   @db.VarChar(500)
+  costCent   Int
+  createdAt  DateTime @default(now())
+  doneAt     DateTime
+  progress   Progress @default(PENDING)
+  employee   Employee @relation(fields: [employeeId], references: [id])
+  employeeId Int
+  client     Client   @relation(fields: [clientId], references: [id])
+  clientId   Int
 
+  @@map("job")
+}
 
 enum Role {
   USER
   ADMIN
+
   @@map("role")
+}
+
+enum Progress {
+  COMPLETED
+  INPROGRESS
+  PENDING
+  CANCELED
+  PAUSED
 }
