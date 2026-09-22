@@ -24,6 +24,18 @@ model Employee {
   @@map("employee")
 }
 
+model Client {
+  id Int @id @default(autoincrement())
+  name String
+  email String @unique
+  phoneNumber String 
+  address String
+
+  @@map("client")
+}
+
+
+
 enum Role {
   USER
   ADMIN
