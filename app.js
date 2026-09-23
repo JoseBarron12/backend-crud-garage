@@ -1,4 +1,5 @@
 const express = require('express');
+const indexRouter = require('./src/routes');
 const app = express();
 
 process.loadEnvFile();
@@ -6,9 +7,7 @@ process.loadEnvFile();
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
-app.get('/', (req, res) => {
-    res.send("HELLOOO");
-})
+app.use('/', indexRouter)
 
 app.listen(process.env.PORT, (err) => {
     if(err) {
