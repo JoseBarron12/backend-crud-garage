@@ -19,7 +19,9 @@
   },
   "homepage": "https://github.com/JoseBarron12/backend-crud-garage#readme",
   "devDependencies": {
-    "prisma": "^7.10.0"
+    "jest": "^30.5.2",
+    "prisma": "^7.10.0",
+    "supertest": "^7.3.0"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.10.0",
