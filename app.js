@@ -4,7 +4,6 @@ const app = express();
 
 process.loadEnvFile();
 
-app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
 app.use('/', indexRouter)
