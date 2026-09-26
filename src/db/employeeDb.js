@@ -1,4 +1,6 @@
 const prisma = require("../../lib/prisma");
+const bcrypt = require("bcryptjs");
+
 
 async function getAllEmployees() {
     const employees = await prisma.employee.findMany({
@@ -21,10 +23,25 @@ async function getEmployeeById(id) {
     return employee;
 }
 
+async function createEmployee(data) {
+    const hashpassword = await bcrypt.hash(data.password, 10);
+    await prisma.employee.create({
+        data: {
+            name: data.name,
+            email: data.email,
+            role: data.user,
+            phone: data.phone,
+            username: data.username,
+            hashpassword: hashpassword,
+        }
+    })
+}
+
 
 module.exports = {
     getAllEmployees,
-    getEmployeeById
+    getEmployeeById,
+    createEmployee
 }
 
 

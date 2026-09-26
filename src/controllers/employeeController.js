@@ -10,8 +10,18 @@ const employeeGet = async (req, res) => {
     res.json({employee});
 }
 
+const employeePost = async (req,res, next) => {
+    try{
+        await db.createEmployee(req.body);
+        res.status(200).redirect("/");
+    } catch (err) {
+        console.log(err);
+        next(err)
+    }
+}
 
 module.exports = {
     employeeListGet,
-    employeeGet
+    employeeGet,
+    employeePost
 }

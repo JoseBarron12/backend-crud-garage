@@ -5,12 +5,13 @@ const jobRouter = require("./job");
 
 const indexRouter = Router();
 
+
 indexRouter.use("/employee", employeeRouter);
 indexRouter.use("/client", clientRouter);
 indexRouter.use("/job", jobRouter);
 
 indexRouter.get("/", (req, res) => {
-    res.send("home");
+    res.json({text: "hello"});
 })
 
 

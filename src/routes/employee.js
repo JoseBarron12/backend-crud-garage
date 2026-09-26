@@ -6,4 +6,6 @@ const employeeRouter = Router();
 employeeRouter.get("/", controller.employeeListGet);
 employeeRouter.get("/:id", controller.employeeGet);
 
+employeeRouter.post("/", controller.employeePost);
+
 module.exports = employeeRouter;
