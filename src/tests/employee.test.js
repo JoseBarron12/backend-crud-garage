@@ -152,13 +152,15 @@ describe('POST /user', () => {
         .send({
             name: "random name",
             email: "random@gmail.com",
+            role: "USER",
             phone: "224-387-2222",
             username: "yuhyuh",
             password: "56347",
         })
-        .expect(200,done)  
+        .expect(302,done)  
     })
 });
+
 
 describe("DELETE /user", () => {
     test("DELETE all request ", async () => {
@@ -333,9 +335,3 @@ describe("PUT /user", () => {
         ]);
     })
 })
-
-
-
-
-
-
