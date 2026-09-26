@@ -202,7 +202,7 @@ describe("DELETE /user", () => {
         expect(response.body.employees).toEqual([]);
     });
 
-    /*
+  
     
     test("DELETE specific employee request with given id", async () => {
         const createManyEmployee = await prisma.employee.createManyAndReturn({
@@ -235,7 +235,9 @@ describe("DELETE /user", () => {
         });
         const currId = createManyEmployee[0].id;
 
-        const response = await request(app).delete(`/employee/${currId}`).set('Accept', 'application/json')
+        const deleteRequest = await request(app).delete(`/employee/${currId}`).set('Accept', 'application/json')
+
+        const response = await request(app).get("/employee");
 
         expect(response.headers["content-type"]).toMatch(/json/);
         expect(response.status).toEqual(200);
@@ -261,7 +263,7 @@ describe("DELETE /user", () => {
                 "username": "mthompson",
             },
         ]);
-    });*/
+    });
 })
 
 /* 
