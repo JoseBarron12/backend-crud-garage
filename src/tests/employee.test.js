@@ -161,7 +161,6 @@ describe('POST /user', () => {
     })
 });
 
-
 describe("DELETE /user", () => {
     test("DELETE all request ", async () => {
         const createManyEmployee = await prisma.employee.createManyAndReturn({
@@ -266,11 +265,8 @@ describe("DELETE /user", () => {
     });
 })
 
-/* 
-
-
 describe("PUT /user", () => {
-    test("GET request with populated employee table", async () => {
+    test("POST to update specific employee", async () => {
         const createManyEmployee = await prisma.employee.createManyAndReturn({
             data: [
                  {
@@ -302,11 +298,19 @@ describe("PUT /user", () => {
         
         const currId = createManyEmployee[0].id;
 
-        const response = await request(app).put(`/employee/${currId}`)
+        const postRequest = await request(app).put(`/employee/${currId}`)
         .type("form")
-        .send({name: "random name"
+        .send({
+            name: "random name",
+            email: "",
+            phone: "",
+            role: "",
+            username: "",
+            password: ""
         })
         .set('Accept', 'application/json')
+
+        const response = await request(app).get("/employee");
 
         expect(response.headers["content-type"]).toMatch(/json/);
         expect(response.status).toEqual(200);
@@ -344,4 +348,3 @@ describe("PUT /user", () => {
         ]);
     })
 })
-*/
