@@ -20,8 +20,30 @@ const employeePost = async (req,res, next) => {
     }
 }
 
+const employeeListDelete = async(req, res, next) => {
+    try {
+        await db.deleteAllEmployees();
+        res.sendStatus(200);
+    } catch (err) {
+        console.log(err);
+        next(err);
+    }
+}
+
+const employeeDelete = async (req , res, next) => {
+    try {
+        await db.deleteEmployeeByID(req.params.id);
+        res.sendStatus(200);
+    } catch(err) {
+        console.log(err);
+        next(err);
+    }
+}
+
 module.exports = {
     employeeListGet,
     employeeGet,
-    employeePost
+    employeePost,
+    employeeListDelete,
+    employeeDelete
 }

@@ -37,11 +37,25 @@ async function createEmployee(data) {
     })
 }
 
+async function deleteAllEmployees() {
+    await prisma.employee.deleteMany();
+}
+
+async function deleteEmployeeByID(id) {
+    await prisma.employee.delete({
+        where: {
+            id: Number(id),
+        }
+    })
+}
+
 
 module.exports = {
     getAllEmployees,
     getEmployeeById,
-    createEmployee
+    createEmployee,
+    deleteAllEmployees,
+    deleteEmployeeByID
 }
 
 
