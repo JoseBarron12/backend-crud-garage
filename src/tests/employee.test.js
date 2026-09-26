@@ -316,16 +316,6 @@ describe("PUT /user", () => {
         expect(response.status).toEqual(200);
         expect(response.body.employees).toEqual([
         {
-            "email": "james.anderson@example.com",
-            "hashpassword": "$2b$10$dummyHashJames001",
-            "id": currId,
-            "jobs": [],
-            "name": "random name",
-            "phone": "555-0101",
-            "role": "USER",
-            "username": "janderson",
-        },
-        {
             "email": "maria.rodriguez@example.com",
             "hashpassword": "$2b$10$dummyHashMaria002",
             "id": currId + 1,
@@ -344,6 +334,16 @@ describe("PUT /user", () => {
             "phone": "555-0103",
             "role": "USER",
             "username": "mthompson",
+        },
+        {
+            "email": "james.anderson@example.com",
+            "hashpassword": "$2b$10$dummyHashJames001",
+            "id": currId,
+            "jobs": [],
+            "name": "random name",
+            "phone": "555-0101",
+            "role": "USER",
+            "username": "janderson",
         },
         ]);
     })
