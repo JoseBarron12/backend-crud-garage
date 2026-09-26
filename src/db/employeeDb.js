@@ -10,8 +10,21 @@ async function getAllEmployees() {
     return employees;
 }
 
+async function getEmployeeById(id) {
+    const employee = await prisma.employee.findUnique({
+        where: {id: id},
+        include: {
+            jobs: true,
+        }
+    });
+
+    return employee;
+}
+
+
 module.exports = {
-    getAllEmployees
+    getAllEmployees,
+    getEmployeeById
 }
 
 

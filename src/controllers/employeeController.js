@@ -5,6 +5,13 @@ const employeeListGet = async (req, res) => {
     res.json({employees});
 }
 
+const employeeGet = async (req, res) => {
+    const employee = await db.getEmployeeById(Number(req.params.id));
+    res.json({employee});
+}
+
+
 module.exports = {
-    employeeListGet
+    employeeListGet,
+    employeeGet
 }
