@@ -40,10 +40,22 @@ const employeeDelete = async (req , res, next) => {
     }
 }
 
+const employeePut = async (req, res, next) => {
+    try {
+        await db.updateEmployeeById(req.params.id, req.body);
+        res.sendStatus(200);
+    } catch(err) {
+        console.log(err);
+        next(err);
+    }
+}
+
+
 module.exports = {
     employeeListGet,
     employeeGet,
     employeePost,
     employeeListDelete,
-    employeeDelete
+    employeeDelete,
+    employeePut
 }

@@ -49,13 +49,61 @@ async function deleteEmployeeByID(id) {
     })
 }
 
+async function updateEmployeeById(id, data) {
+    if(data.name != "") {
+        await prisma.employee.update({
+            where: { id: Number(id)},
+            data : {name: data.name}
+        })
+    } 
+    
+    if (data.phone != "") {
+        await prisma.employee.update({
+            where: { id: Number(id)},
+            data : { phone: data.phone}
+        })
+    } 
+    
+    if(data.email != "") {
+        await prisma.employee.update({
+            where: { id: Number(id)},
+            data : {email: data.email}
+        })
+    } 
+    
+    if(data.role != "") {
+        await prisma.employee.update({
+            where: { id: Number(id)},
+            data : {role: data.role}
+        })    
+    } 
+    
+    if(data.username != "") {
+        await prisma.employee.update({
+            where: { id: Number(id)},
+            data : {username: data.username}
+        })
+    } 
+    
+    if(data.password != "") {
+        
+        const hashpassword = await bcrypt.hash(data.password, 10);
+        await prisma.employee.update({
+            where: { id: Number(id)},
+            data: {hashpassword: hashpassword}
+        })
+    }
+}
+
+
 
 module.exports = {
     getAllEmployees,
     getEmployeeById,
     createEmployee,
     deleteAllEmployees,
-    deleteEmployeeByID
+    deleteEmployeeByID,
+    updateEmployeeById
 }
 
 

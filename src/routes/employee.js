@@ -11,4 +11,6 @@ employeeRouter.post("/", controller.employeePost);
 employeeRouter.delete("/", controller.employeeListDelete);
 employeeRouter.delete("/:id", controller.employeeDelete);
 
+employeeRouter.put("/:id", controller.employeePut);
+
 module.exports = employeeRouter;
