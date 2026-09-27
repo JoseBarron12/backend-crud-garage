@@ -7,9 +7,23 @@ async function getAllClients() {
         }
 
     });
+
     return clients;
 }
 
+async function getClientById(id) {
+    const client = await prisma.client.findUnique({
+        where: {
+            id: id
+        },
+        include: {
+            jobs: true,
+        }
+    })
+    return client;
+}
+
 module.exports = {
-    getAllClients
+    getAllClients,
+    getClientById
 }

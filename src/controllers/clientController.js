@@ -5,6 +5,12 @@ const clientListGet = async (req, res) => {
     res.json({clients});
 }
 
+const clientGet = async (req, res) => {
+    const client = await db.getClientById(Number(req.params.id));
+    res.json({client});
+}
+
 module.exports = {
     clientListGet,
+    clientGet,
 }
