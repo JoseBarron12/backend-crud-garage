@@ -35,8 +35,22 @@ async function createClient(data) {
     })
 }
 
+async function deleteAllClients() {
+    await prisma.client.deleteMany();
+}
+
+async function deleteClientById(id) {
+    await prisma.client.delete({
+        where: {
+            id: Number(id)
+        }
+    });
+}
+
 module.exports = {
     getAllClients,
     getClientById,
-    createClient
+    createClient,
+    deleteAllClients,
+    deleteClientById
 }

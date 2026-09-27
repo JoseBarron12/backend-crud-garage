@@ -20,8 +20,30 @@ const clientPost = async (req, res, next) => {
     }
 }
 
+const clientListDelete = async (req, res, next) => {
+    try {
+        await db.deleteAllClients();
+        res.sendStatus(200);
+    } catch(err) {
+        console.log(err);
+        next(err);
+    }
+}
+
+const clientDelete = async (req, res, next) => {
+    try {
+        await db.deleteClientById(req.params.id);
+        res.sendStatus(200);
+    } catch(err) {
+        console.log(err);
+        next(err);
+    }
+}
+
 module.exports = {
     clientListGet,
     clientGet,
-    clientPost
+    clientPost,
+    clientListDelete,
+    clientDelete
 }

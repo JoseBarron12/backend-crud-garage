@@ -8,5 +8,7 @@ clientRouter.get("/:id", controller.clientGet);
 
 clientRouter.post("/", controller.clientPost);
 
+clientRouter.delete("/", controller.clientListDelete);
+clientRouter.delete("/:id", controller.clientDelete)
 
 module.exports = clientRouter;
