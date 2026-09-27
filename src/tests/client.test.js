@@ -1,10 +1,9 @@
 const index = require("../routes/index");
 const request = require("supertest")
-
 const express = require("express");
 const prisma = require("../../lib/prisma");
-const app = express();
 
+const app = express();
 app.use(express.urlencoded({ extended: false }));
 app.use("/", index);
 
@@ -23,7 +22,7 @@ describe("GET /client", () => {
         .expect(200,done)
     });
 
-    test("GET request populated database", async (done) => {
+    test("GET request populated database", async () => {
         const clients = await prisma.client.createManyAndReturn({
             data: [
                 {name: "jay brown", email: "example1@gmail.com",phoneNumber: "223-223-2222", address: "2112 N asd adas Illinois", },
@@ -34,7 +33,9 @@ describe("GET /client", () => {
 
         const response = await request(app).get("/client").set('Accept', 'application/json');
 
-        const currId = createManyEmployee[0].id;
+        const currId = clients[0].id;
+        
+        console.log(response);
 
         expect(response.headers["content-type"]).toMatch(/json/);
         expect(response.status).toEqual(200);
@@ -66,7 +67,7 @@ describe("GET /client", () => {
         ])
     })
 
-    test("GET request for client w/ id", async (done) => {
+    test("GET request for client w/ id", async () => {
         const clients = await prisma.client.createManyAndReturn({
             data: [
                 {name: "jay brown", email: "example1@gmail.com",phoneNumber: "223-223-2222", address: "2112 N asd adas Illinois", },
@@ -75,13 +76,12 @@ describe("GET /client", () => {
             ]
         });
 
-        const currId = createManyEmployee[0].id;
-
+        const currId = clients[0].id;
 
         const response = await request(app).get(`/client/${currId}`).set('Accept', 'application/json');
         expect(response.headers["content-type"]).toMatch(/json/);
         expect(response.status).toEqual(200);
-        expect(response.body.client).toEqual([
+        expect(response.body.client).toEqual(
             {
                 "id": currId,
                 "name": "jay brown",
@@ -90,10 +90,11 @@ describe("GET /client", () => {
                 "address": "2112 N asd adas Illinois",
                 "jobs": []
             }
-        ])
+        )
     })
 
 });
+
 
 describe("POST /client", () => {
     test("POST request to create client", (done) => {
@@ -219,4 +220,4 @@ describe("POST /client", () => {
         ])
 
     })
-})
+}) 
