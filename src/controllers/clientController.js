@@ -40,10 +40,22 @@ const clientDelete = async (req, res, next) => {
     }
 }
 
+const clientPut = async (req,res, next) => {
+    try {
+        await db.updateClientId(req.params.id, req.body);
+        res.sendStatus(200);
+    } catch (err) {
+        console.log(err);
+        next(err);
+    }
+}
+
+
 module.exports = {
     clientListGet,
     clientGet,
     clientPost,
     clientListDelete,
-    clientDelete
+    clientDelete,
+    clientPut
 }

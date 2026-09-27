@@ -47,10 +47,42 @@ async function deleteClientById(id) {
     });
 }
 
+async function updateClientId(id, data) {
+    if(data.name != "") {
+        await prisma.client.update({
+            where: { id: Number(id)},
+            data : {name: data.name}
+        })
+    } 
+    
+    if (data.phoneNumber != "") {
+        await prisma.client.update({
+            where: { id: Number(id)},
+            data : { phoneNumber: data.phone}
+        })
+    } 
+    
+    if(data.email != "") {
+        await prisma.client.update({
+            where: { id: Number(id)},
+            data : {email: data.email}
+        })
+    } 
+    
+    if(data.address != "") {
+        await prisma.client.update({
+            where: { id: Number(id)},
+            data : {address: data.address}
+        })    
+    } 
+    
+}
+
 module.exports = {
     getAllClients,
     getClientById,
     createClient,
     deleteAllClients,
-    deleteClientById
+    deleteClientById,
+    updateClientId
 }
