@@ -34,8 +34,6 @@ describe("GET /client", () => {
         const response = await request(app).get("/client").set('Accept', 'application/json');
 
         const currId = clients[0].id;
-        
-        console.log(response);
 
         expect(response.headers["content-type"]).toMatch(/json/);
         expect(response.status).toEqual(200);
@@ -113,7 +111,7 @@ describe("POST /client", () => {
 
 
 describe("DELETE /client", () => {
-    test("DELETE request with populated database", async (done) => {
+    test("DELETE request with populated database", async () => {
         const clients = await prisma.client.createManyAndReturn({
             data: [
                 {name: "jay brown", email: "example1@gmail.com",phoneNumber: "223-223-2222", address: "2112 N asd adas Illinois", },
@@ -129,7 +127,7 @@ describe("DELETE /client", () => {
         expect(response.body.clients).toEqual([]);
     });
 
-    test("DELETE request for single client w/ id", async (done) => {
+    test("DELETE request for single client w/ id", async () => {
         const clients = await prisma.client.createManyAndReturn({
             data: [
                 {name: "jay brown", email: "example1@gmail.com",phoneNumber: "223-223-2222", address: "2112 N asd adas Illinois", },
@@ -167,7 +165,7 @@ describe("DELETE /client", () => {
 });
 
 describe("POST /client", () => {
-    test("UPDATE request for client with id", async (done) => {
+    test("UPDATE request for client with id", async () => {
         const clients = await prisma.client.createManyAndReturn({
             data: [
                 {name: "jay brown", email: "example1@gmail.com",phoneNumber: "223-223-2222", address: "2112 N asd adas Illinois", },
