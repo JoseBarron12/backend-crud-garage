@@ -10,7 +10,18 @@ const clientGet = async (req, res) => {
     res.json({client});
 }
 
+const clientPost = async (req, res, next) => {
+    try{
+        await db.createClient(req.body);
+        res.sendStatus(200);
+    } catch (err) {
+        console.log(err);
+        next(err)
+    }
+}
+
 module.exports = {
     clientListGet,
     clientGet,
+    clientPost
 }

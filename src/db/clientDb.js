@@ -23,7 +23,20 @@ async function getClientById(id) {
     return client;
 }
 
+async function createClient(data) {
+    await prisma.client.create({
+        data: {
+            name: data.name,
+            email: data.email,
+            phoneNumber: data.phone,
+            address: data.address,
+
+        }
+    })
+}
+
 module.exports = {
     getAllClients,
-    getClientById
+    getClientById,
+    createClient
 }
