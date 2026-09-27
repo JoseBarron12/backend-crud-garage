@@ -120,7 +120,7 @@ describe("DELETE /client", () => {
             ]
         });
 
-        const deleteRequest = await request(app).delete("/client").set('').set('Accept', 'application/json');
+        const deleteRequest = await request(app).delete("/client").set('Accept', 'application/json');
         const response = await request(app).get("/client")
         expect(response.headers["content-type"]).toMatch(/json/);
         expect(response.status).toEqual(200);
@@ -138,7 +138,7 @@ describe("DELETE /client", () => {
 
         const currId = clients[0].id;
 
-        const deleteRequest = await request(app).delete(`/client/${currId}`);
+        const deleteRequest = await request(app).delete(`/client/${currId}`).set('Accept', 'application/json');;
 
         const response = await request(app).get("/client")
         expect(response.headers["content-type"]).toMatch(/json/);
@@ -164,7 +164,7 @@ describe("DELETE /client", () => {
     })
 });
 
-describe("POST /client", () => {
+describe("PUT /client", () => {
     test("UPDATE request for client with id", async () => {
         const clients = await prisma.client.createManyAndReturn({
             data: [
