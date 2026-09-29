@@ -11,4 +11,6 @@ jobRouter.post("/", controller.jobPost);
 jobRouter.delete("/", controller.jobListDelete);
 jobRouter.delete("/:id", controller.jobDelete);
 
+jobRouter.put("/:id", controller.jobPut);
+
 module.exports = jobRouter;

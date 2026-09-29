@@ -40,10 +40,21 @@ const jobDelete = async(req, res, next) => {
     }
 }
 
+const jobPut = async(req, res, next) => {
+    try {
+        await db.updateJobById(req.params.id, req.body);
+        sendStatus(200);
+    } catch (err) {
+        console.log(err);
+        next(err);
+    }
+}
+
 module.exports = {
     jobListGet,
     jobGet,
     jobPost,
     jobListDelete,
-    jobDelete
+    jobDelete,
+    jobPut
 }

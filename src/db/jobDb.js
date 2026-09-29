@@ -49,11 +49,28 @@ async function deleteJobById(id) {
     })
 }
 
+async function updateJobById(id, data) {
+    await prisma.job.update({
+        where: {
+            id: Number(id),
+        },
+        data: {
+            desc: data.desc,
+            costCent: Number(data.costCent),
+            createdAt: data.createdAt,
+            doneAt: data.doneAt,
+            progress: data.progress,
+            employeeId: Number(data.employeeId),
+            clientId: Number(data.clientId)
+        }
+    })
+}
 
 module.exports = {
     getAllJobs,
     getJobById,
     createJob,
     deleteAllJobs,
-    deleteJobById
+    deleteJobById,
+    updateJobById
 }
