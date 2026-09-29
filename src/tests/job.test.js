@@ -239,6 +239,56 @@ describe("GET /job", (done) => {
         )
     })
 
+});
+
+describe("POST /job", (done) => {
+    test("POST request w/ populated employee + client schema", async () => {
+        const createEmployee = await prisma.employee.createManyAndReturn({
+            data: [
+                {
+                    name: "James Anderson",
+                    email: "james.anderson@example.com",
+                    role: "USER",
+                    phone: "555-0101",
+                    username: "janderson",
+                    hashpassword: "$2b$10$dummyHashJames001",
+                },
+                {
+                    name: "Maria Rodriguez",
+                    email: "maria.rodriguez@example.com",
+                    role: "USER",
+                    phone: "555-0102",
+                    username: "mrodriguez",
+                    hashpassword: "$2b$10$dummyHashMaria002",
+                },
+            ]
+        });
+        
+        const createClient = await prisma.client.createManyAndReturn({
+            data: [
+                {name: "jay brown", email: "example1@gmail.com",phoneNumber: "223-223-2222", address: "2112 N asd adas Illinois", },
+                {name: "smtih rowe", email: "example2@gmail.com",phoneNumber: "253-123-2552", address: "7657 South lansingh", },
+            ]
+        });
+
+        const employeeId = createEmployee[0].id;
+        const clientId = createClient[0].id;
+        const createdDate = new Date();
+
+
+        const createRequest = await request(app).post("/job").type("form").send({
+            desc: "filler description for a job that doesnt exist",
+            costCent: 564344,
+            createdAt: createdDate,
+            doneAt: createdDate,
+            progress: "COMPLETED",
+            employeeId: employeeId,
+            clientId: clientId,
+        }).set('Accept', 'application/json');
+
+        expect(createRequest.status).toEqual(200);
+
+    })
 })
 
 
