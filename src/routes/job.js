@@ -4,6 +4,8 @@ const controller = require('../controllers/jobController');
 const jobRouter = Router();
 
 jobRouter.get("/", controller.jobListGet);
-jobRouter.get("/:id", controller.jobGet)
+jobRouter.get("/:id", controller.jobGet);
+
+jobRouter.post("/", controller.jobPost);
 
 module.exports = jobRouter;

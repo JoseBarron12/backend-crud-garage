@@ -23,8 +23,23 @@ async function getJobById(id) {
     return job;
 }
 
+async function createJob(data) {
+    await prisma.job.create({
+        data: {
+            desc: data.desc,
+            costCent: Number(data.costCent),
+            createdAt: data.createdAt,
+            doneAt: data.doneAt,
+            progress: data.progress,
+            employeeId: Number(data.employeeId),
+            clientId: Number(data.clientId)
+        }
+    })
+}
+
 
 module.exports = {
     getAllJobs,
-    getJobById
+    getJobById,
+    createJob
 }

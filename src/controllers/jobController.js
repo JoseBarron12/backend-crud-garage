@@ -10,7 +10,18 @@ const jobGet = async (req, res) => {
     res.json({job});
 }
 
+const jobPost = async (req,res, next) => {
+    try {
+        await db.createJob(req.body);
+        res.sendStatus(200);
+    }catch (err) {
+        console.log(err);
+        next(err);
+    }
+}
+
 module.exports = {
     jobListGet,
-    jobGet
+    jobGet,
+    jobPost
 }
