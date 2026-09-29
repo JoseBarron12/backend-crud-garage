@@ -20,8 +20,30 @@ const jobPost = async (req,res, next) => {
     }
 }
 
+const jobListDelete = async (req, res, next) => {
+    try {
+        await db.deleteAllJobs();
+        res.sendStatus(200);
+    } catch (err) {
+        console.log(err);
+        next(err);
+    }
+}
+
+const jobDelete = async(req, res, next) => {
+    try {
+        await db.deleteJobById(req.params.id)
+        res.sendStatus(200);
+    } catch(err) {
+        console.log(err);
+        next(err);
+    }
+}
+
 module.exports = {
     jobListGet,
     jobGet,
-    jobPost
+    jobPost,
+    jobListDelete,
+    jobDelete
 }
