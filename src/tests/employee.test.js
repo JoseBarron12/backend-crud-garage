@@ -11,7 +11,7 @@ beforeEach(async () => {
     await prisma.employee.deleteMany();
 })
 
-describe('GET /user', () => {
+describe('GET /employee', () => {
     test("initial GET request", done => {
         request(app)
         .get("/employee")
@@ -144,7 +144,7 @@ describe('GET /user', () => {
 
 });
 
-describe('POST /user', () => {
+describe('POST /employee', () => {
     test("create user request with valid information", done => {
         request(app)
         .post("/employee")
@@ -161,7 +161,7 @@ describe('POST /user', () => {
     })
 });
 
-describe("DELETE /user", () => {
+describe("DELETE /employee", () => {
     test("DELETE all request ", async () => {
         const createManyEmployee = await prisma.employee.createManyAndReturn({
             data: [
@@ -265,7 +265,7 @@ describe("DELETE /user", () => {
     });
 })
 
-describe("PUT /user", () => {
+describe("PUT /employee", () => {
     test("POST to update specific employee", async () => {
         const createManyEmployee = await prisma.employee.createManyAndReturn({
             data: [
