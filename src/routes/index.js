@@ -6,7 +6,7 @@ const authRouter = require("./auth")
 
 const indexRouter = Router();
 
-indexRouter.use("/register", authRouter);
+indexRouter.use("/auth", authRouter);
 indexRouter.use("/employee", employeeRouter);
 indexRouter.use("/client", clientRouter);
 indexRouter.use("/job", jobRouter);

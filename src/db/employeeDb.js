@@ -23,6 +23,16 @@ async function getEmployeeById(id) {
     return employee;
 }
 
+async function getEmployeeByUsername(username) {
+    const employee = await prisma.employee.findFirst({
+        where : {username: username}
+    });
+
+    return employee
+}
+
+
+
 async function createEmployee(data) {
     const hashpassword = await bcrypt.hash(data.password, 10);
     await prisma.employee.create({
@@ -44,7 +54,7 @@ async function deleteAllEmployees() {
 async function deleteEmployeeByID(id) {
     await prisma.employee.delete({
         where: {
-            id: Number(id),
+            id: Number(id)
         }
     })
 }
@@ -100,6 +110,7 @@ async function updateEmployeeById(id, data) {
 module.exports = {
     getAllEmployees,
     getEmployeeById,
+    getEmployeeByUsername,
     createEmployee,
     deleteAllEmployees,
     deleteEmployeeByID,
