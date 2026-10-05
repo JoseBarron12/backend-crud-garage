@@ -7,14 +7,14 @@ process.loadEnvFile();
 
 const opts = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-    secrerOrKey: process.env.JWT_SECRET,
+    secretOrKey: process.env.JWT_SECRET,
 };
 
 module.exports = (passport) => {
     passport.use(
         new JwtStrategy(opts, async(jwt_payload, done) => {
             try {
-                const user = await prisma.client.findUnique({
+                const user = await prisma.employee.findUnique({
                     where: {
                         id: jwt_payload.id,
                     }
