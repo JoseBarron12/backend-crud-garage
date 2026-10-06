@@ -122,4 +122,38 @@ describe("access protected route /employee " , () => {
         expect(response.status).toEqual(403);
     });
 
+    test("POST /employee route allow admin access" , async () => {
+        const response = await request(app)
+        .post("/employee")
+        .type("form")
+        .send({
+            name: "random name",
+            email: "random@gmail.com",
+            role: "USER",
+            phone: "224-387-2222",
+            username: "yuhyuh",
+            password: "56347",
+        })
+        .set('Authorization', `Bearer ${authTokenAdmin}`)
+        expect(response.status).toEqual(200);
+    })
+
+    test("POST /employee route not allow user access" , async () => {
+        const response = await request(app)
+        .post("/employee")
+        .type("form")
+        .send({
+            name: "random33 name",
+            email: "random@33242gmail.com",
+            role: "USER",
+            phone: "224-387-2222",
+            username: "yu332h332432yuh",
+            password: "532236347",
+        })
+        .set('Authorization', `Bearer ${authTokenUser}`)
+        expect(response.status).toEqual(403);
+    })
+
+
+
 })
