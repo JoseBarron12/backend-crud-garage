@@ -14,6 +14,7 @@ app.use(passport.initialize())
 app.use("/", index);
 
 let authTokenUser, authTokenAdmin;
+let userId, adminId;
 
 beforeEach(async () => {
     await prisma.$transaction([
@@ -64,12 +65,15 @@ beforeEach(async () => {
     authTokenUser = userLogin.body.token;
     authTokenAdmin = adminLogin.body.token;
 
+    userId = user.id;
+    adminId = admin.id;
+
 });
 
-describe("access protected routes", () => {
+describe("access protected routes w/ varying token", () => {
     test("initial GET request w/ token", async () => {
         const response = await request(app)
-        .get("/employee")
+        .get("/job")
         .set('Authorization', `Bearer ${authTokenUser}`)
         expect(response.headers["content-type"]).toMatch(/json/);
         expect(response.status).toEqual(200);
@@ -77,7 +81,45 @@ describe("access protected routes", () => {
 
     test("initial GET request w/o token", async () => {
         const response = await request(app)
-        .get("/employee")
+        .get("/job")
         expect(response.status).toEqual(401);
     });
 });
+
+describe("access protected route /employee " , () => {
+    test("GET /employee route allow admin access" , async () => {
+        const response = await request(app)
+        .get("/employee")
+        .set('Authorization', `Bearer ${authTokenAdmin}`)
+        expect(response.status).toEqual(200);
+    });
+
+    test("GET /employee route not allow regular user access" , async () => {
+        const response = await request(app)
+        .get("/employee")
+        .set('Authorization', `Bearer ${authTokenUser}`)
+        expect(response.status).toEqual(403);
+    });
+
+    test("GET /employee/:id route allow admin access on any id" , async () => {
+        const response = await request(app)
+        .get(`/employee/${userId}`)
+        .set('Authorization', `Bearer ${authTokenAdmin}`)
+        expect(response.status).toEqual(200);
+    });
+
+    test("GET /employee route allow regular user access on same id" , async () => {
+        const response = await request(app)
+        .get(`/employee/${userId}`)
+        .set('Authorization', `Bearer ${authTokenUser}`)
+        expect(response.status).toEqual(200);
+    });
+
+    test("GET /employee route not allow regular user access on any id" , async () => {
+        const response = await request(app)
+        .get(`/employee/${adminId}`)
+        .set('Authorization', `Bearer ${authTokenUser}`)
+        expect(response.status).toEqual(403);
+    });
+
+})
