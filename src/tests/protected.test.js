@@ -250,14 +250,14 @@ describe("access protected route /client" ,() => {
 
     test("GET /client/:id route allow admin access on any id" , async () => {
         const response = await request(app)
-        .get(`/employee/${userId}`)
+        .get(`/client/${userId}`)
         .set('Authorization', `Bearer ${authTokenAdmin}`)
         expect(response.status).toEqual(200);
     });
 
     test("GET /client/:id route allow regular user access on any id" , async () => {
         const response = await request(app)
-        .get(`/employee/${userId}`)
+        .get(`/client/${userId}`)
         .set('Authorization', `Bearer ${authTokenUser}`)
         expect(response.status).toEqual(200);
     });
