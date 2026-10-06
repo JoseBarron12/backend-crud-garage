@@ -9,8 +9,8 @@ employeeRouter.get("/:id", controller.employeeGet);
 
 employeeRouter.post("/", isAdmin, controller.employeePost);
 
-employeeRouter.delete("/", controller.employeeListDelete);
-employeeRouter.delete("/:id", controller.employeeDelete);
+employeeRouter.delete("/", isAdmin,  controller.employeeListDelete);
+employeeRouter.delete("/:id", isAdmin,  controller.employeeDelete);
 
 employeeRouter.put("/:id", controller.employeePut);
 
