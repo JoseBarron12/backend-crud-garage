@@ -86,7 +86,7 @@ describe("access protected routes w/ varying token", () => {
     });
 });
 
-describe("access protected route /employee " , () => {
+describe("access protected route /employee" ,() => {
     test("GET /employee route allow admin access" , async () => {
         const response = await request(app)
         .get("/employee")
@@ -231,6 +231,23 @@ describe("access protected route /employee " , () => {
         expect(response.status).toEqual(403);
     });
 
-
-
 });
+
+describe("access protected route /client" ,() => {
+    test("GET /client route allow admin access" , async () => {
+        const response = await request(app)
+        .get("/client")
+        .set('Authorization', `Bearer ${authTokenAdmin}`)
+        expect(response.status).toEqual(200);
+    });
+
+    test("GET /client route allow regular user access" , async () => {
+        const response = await request(app)
+        .get("/client")
+        .set('Authorization', `Bearer ${authTokenUser}`)
+        expect(response.status).toEqual(200);
+    });
+
+
+
+})
