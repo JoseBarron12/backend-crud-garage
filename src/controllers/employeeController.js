@@ -49,6 +49,13 @@ const employeeDelete = async (req , res, next) => {
 }
 
 const employeePut = async (req, res, next) => {
+    
+    const auth = await isAuth(req,req.params.id);
+
+    if(!auth) {
+        return res.sendStatus(403);
+    }
+    
     try {
         await db.updateEmployeeById(req.params.id, req.body);
         res.sendStatus(200);
