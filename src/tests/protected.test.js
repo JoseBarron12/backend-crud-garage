@@ -152,8 +152,37 @@ describe("access protected route /employee " , () => {
         })
         .set('Authorization', `Bearer ${authTokenUser}`)
         expect(response.status).toEqual(403);
+    });
+
+    test("DELETE /employee route allow admin access" , async () => {
+        const response = await request(app)
+        .delete("/employee")
+        .set('Authorization', `Bearer ${authTokenAdmin}`)
+        expect(response.status).toEqual(200);
     })
 
+    test("DELETE /employee route not allow user access" , async () => {
+        const response = await request(app)
+        .delete("/employee")
+        .set('Authorization', `Bearer ${authTokenUser}`)
+        expect(response.status).toEqual(403);
+    });
+
+    test("DELETE /employee/:id route allow admin access" , async () => {
+        const response = await request(app)
+        .delete(`/employee/${userId}`)
+        .set('Authorization', `Bearer ${authTokenAdmin}`)
+        expect(response.status).toEqual(200);
+    })
+
+    test("DELETE /employee/:id route not allow user access" , async () => {
+        const response = await request(app)
+        .delete(`/employee/${userId}`)
+        .set('Authorization', `Bearer ${authTokenUser}`)
+        expect(response.status).toEqual(403);
+    });
 
 
-})
+
+
+});
