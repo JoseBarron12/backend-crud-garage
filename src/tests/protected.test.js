@@ -182,6 +182,54 @@ describe("access protected route /employee " , () => {
         expect(response.status).toEqual(403);
     });
 
+    test("PUT /employee route allow admin access" , async () => {
+        const response = await request(app)
+        .put(`/employee/${userId}`)
+        .type("form")
+        .send({
+            name: "random name",
+            email: "",
+            phone: "",
+            role: "",
+            username: "",
+            password: ""
+        })
+        .set('Authorization', `Bearer ${authTokenAdmin}`)
+        expect(response.status).toEqual(200);
+    });
+
+    test("PUT /employee route allow user access on same id" , async () => {
+        const response = await request(app)
+        .put(`/employee/${userId}`)
+        .type("form")
+        .send({
+            name: "random name",
+            email: "",
+            phone: "",
+            role: "",
+            username: "",
+            password: ""
+        })
+        .set('Authorization', `Bearer ${authTokenUser}`)
+        expect(response.status).toEqual(200);
+    });
+
+
+    test("PUT /employee route not allow user access" , async () => {
+        const response = await request(app)
+        .put(`/employee/${adminId}`)
+        .type("form")
+        .send({
+            name: "random name",
+            email: "",
+            phone: "",
+            role: "",
+            username: "",
+            password: ""
+        })
+        .set('Authorization', `Bearer ${authTokenUser}`)
+        expect(response.status).toEqual(403);
+    });
 
 
 
