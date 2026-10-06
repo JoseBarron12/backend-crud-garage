@@ -262,4 +262,34 @@ describe("access protected route /client" ,() => {
         expect(response.status).toEqual(200);
     });
 
+    test("POST /client route allow admin access" , async () => {
+        const response = await request(app)
+        .post("/client")
+        .type("form")
+        .send({
+            name: "jamal hersldsad",
+            email: "filler@gmail",
+            phone: "334-546-9832",
+            address: "23 S Brokhill New Jersey 34422",
+        })
+        .set('Authorization', `Bearer ${authTokenAdmin}`)
+        expect(response.status).toEqual(200);
+    });
+
+    test("POST /client route allow regular user access" , async () => {
+        const response = await request(app)
+        .post("/client")
+        .type("form")
+        .send({
+            name: "jamal hersldsad",
+            email: "filler@gmail",
+            phone: "334-546-9832",
+            address: "23 S Brokhill New Jersey 34422",
+        })
+        .set('Authorization', `Bearer ${authTokenUser}`)
+        expect(response.status).toEqual(200);
+    });
+
+
+
 })
