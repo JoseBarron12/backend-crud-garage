@@ -7,7 +7,7 @@ const employeeRouter = Router();
 employeeRouter.get("/", isAdmin ,controller.employeeListGet);
 employeeRouter.get("/:id", controller.employeeGet);
 
-employeeRouter.post("/", controller.employeePost);
+employeeRouter.post("/", isAdmin, controller.employeePost);
 
 employeeRouter.delete("/", controller.employeeListDelete);
 employeeRouter.delete("/:id", controller.employeeDelete);

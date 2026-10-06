@@ -21,7 +21,7 @@ const employeeGet = async (req, res) => {
 const employeePost = async (req,res, next) => {
     try{
         await db.createEmployee(req.body);
-        res.status(200).redirect("/");
+        res.sendStatus(200);
     } catch (err) {
         console.log(err);
         next(err)
