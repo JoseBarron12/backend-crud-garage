@@ -1,3 +1,4 @@
+const { isAdmin, isAuth } = require('../config/authentication');
 const db = require('../db/employeeDb')
 
 const employeeListGet = async (req, res) => {
@@ -6,6 +7,13 @@ const employeeListGet = async (req, res) => {
 }
 
 const employeeGet = async (req, res) => {
+    
+    const auth = await isAuth(req,req.params.id);
+
+    if(!auth) {
+        return res.sendStatus(403);
+    }
+
     const employee = await db.getEmployeeById(Number(req.params.id));
     res.json({employee});
 }

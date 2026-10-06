@@ -1,9 +1,10 @@
 const {Router} = require('express');
 const controller = require("../controllers/employeeController");
+const { isAdmin } = require('../config/authentication');
 
 const employeeRouter = Router();
 
-employeeRouter.get("/", controller.employeeListGet);
+employeeRouter.get("/", isAdmin ,controller.employeeListGet);
 employeeRouter.get("/:id", controller.employeeGet);
 
 employeeRouter.post("/", controller.employeePost);
