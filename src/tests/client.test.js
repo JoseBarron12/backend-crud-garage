@@ -176,7 +176,7 @@ describe("PUT /client", () => {
 
         const currId = clients[0].id;
 
-        const postRequest = await request(app).post(`/client/${currId}`)
+        const postRequest = await request(app).put(`/client/${currId}`)
         .type("form")
         .send({
             name: "random name",
