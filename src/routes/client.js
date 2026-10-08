@@ -1,5 +1,6 @@
 const {Router} = require('express');
 const controller = require("../controllers/clientController");
+const { isAdmin } = require('../config/authentication');
 
 const clientRouter = Router();
 
@@ -8,8 +9,8 @@ clientRouter.get("/:id", controller.clientGet);
 
 clientRouter.post("/", controller.clientPost);
 
-clientRouter.delete("/", controller.clientListDelete);
-clientRouter.delete("/:id", controller.clientDelete);
+clientRouter.delete("/", isAdmin, controller.clientListDelete);
+clientRouter.delete("/:id", isAdmin, controller.clientDelete);
 
 clientRouter.post("/:id", controller.clientPut);
 
