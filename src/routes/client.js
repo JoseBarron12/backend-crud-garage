@@ -12,6 +12,6 @@ clientRouter.post("/", controller.clientPost);
 clientRouter.delete("/", isAdmin, controller.clientListDelete);
 clientRouter.delete("/:id", isAdmin, controller.clientDelete);
 
-clientRouter.post("/:id", controller.clientPut);
+clientRouter.put("/:id", controller.clientPut);
 
 module.exports = clientRouter;
