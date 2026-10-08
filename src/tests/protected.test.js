@@ -290,6 +290,66 @@ describe("access protected route /client" ,() => {
         expect(response.status).toEqual(200);
     });
 
+    test("DELETE /client route allow admin access" , async () => {
+        const clients = await prisma.client.createManyAndReturn({
+            data: [
+                {name: "jay brown", email: "example1@gmail.com",phoneNumber: "223-223-2222", address: "2112 N asd adas Illinois", },
+                {name: "smtih rowe", email: "example2@gmail.com",phoneNumber: "253-123-2552", address: "7657 South lansingh", },
+                {name: "jamal hersym", email: "example3@gmail.com",phoneNumber: "223-243-7686", address: "biriths columia", },
+            ]
+        });
+
+        const response = await request(app)
+        .delete("/client")
+        .set('Authorization', `Bearer ${authTokenAdmin}`)
+        expect(response.status).toEqual(200);
+    });
+
+    test("DELETE /client route not allow regular user access" , async () => {
+        const clients = await prisma.client.createManyAndReturn({
+            data: [
+                {name: "jay brown", email: "example1@gmail.com",phoneNumber: "223-223-2222", address: "2112 N asd adas Illinois", },
+                {name: "smtih rowe", email: "example2@gmail.com",phoneNumber: "253-123-2552", address: "7657 South lansingh", },
+                {name: "jamal hersym", email: "example3@gmail.com",phoneNumber: "223-243-7686", address: "biriths columia", },
+            ]
+        });
+        
+        const response = await request(app)
+        .delete("/client")
+        .set('Authorization', `Bearer ${authTokenUser}`)
+        expect(response.status).toEqual(403);
+    });
+
+    test("DELETE /client/:id route allow admin access on any id" , async () => {
+        const clients = await prisma.client.createManyAndReturn({
+            data: [
+                {name: "jay brown", email: "example1@gmail.com",phoneNumber: "223-223-2222", address: "2112 N asd adas Illinois", },
+                {name: "smtih rowe", email: "example2@gmail.com",phoneNumber: "253-123-2552", address: "7657 South lansingh", },
+                {name: "jamal hersym", email: "example3@gmail.com",phoneNumber: "223-243-7686", address: "biriths columia", },
+            ]
+        });
+        
+        const response = await request(app)
+        .delete(`/client/${clients[1].id}`)
+        .set('Authorization', `Bearer ${authTokenAdmin}`)
+        expect(response.status).toEqual(200);
+    });
+
+    test("DELETE /client/:id route not allow regular user access on any id" , async () => {
+        const clients = await prisma.client.createManyAndReturn({
+            data: [
+                {name: "jay brown", email: "example1@gmail.com",phoneNumber: "223-223-2222", address: "2112 N asd adas Illinois", },
+                {name: "smtih rowe", email: "example2@gmail.com",phoneNumber: "253-123-2552", address: "7657 South lansingh", },
+                {name: "jamal hersym", email: "example3@gmail.com",phoneNumber: "223-243-7686", address: "biriths columia", },
+            ]
+        });
+        
+        const response = await request(app)
+        .delete(`/client/${clients[0].id}`)
+        .set('Authorization', `Bearer ${authTokenUser}`)
+        expect(response.status).toEqual(403);
+    });
+
 
 
 })
