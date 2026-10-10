@@ -791,5 +791,155 @@ describe("access protected route /job" , () => {
         expect(response.status).toEqual(403);
     })
 
+    test("PUT /job/:id route allow admin access on any id", async () => {
+        const createClient = await prisma.client.createManyAndReturn({
+            data: [
+                {name: "jay brown", email: "example1@gmail.com",phoneNumber: "223-223-2222", address: "2112 N asd adas Illinois", },
+                {name: "smtih rowe", email: "example2@gmail.com",phoneNumber: "253-123-2552", address: "7657 South lansingh", },
+            ]
+        });
+        const currDate = new Date();
+        
+        const createJobs = await prisma.job.createManyAndReturn({
+            data: [
+                {
+                    desc: "random message one",
+                    costCent: 234123,
+                    createdAt: currDate,
+                    doneAt: currDate,
+                    progress: "PAUSED",
+                    employeeId: adminId,
+                    clientId: createClient[0].id
+                },
+                {
+                    desc: "random message two",
+                    costCent: 321643,
+                    doneAt: currDate,
+                    createdAt: currDate,
+                    progress: "COMPLETED",
+                    employeeId: userId,
+                    clientId: createClient[1].id
+                }
+            ]
+        })
+
+        const response = await request(app)
+        .put(`/job/${createJobs[1].id}`)
+        .type("form")
+        .send({
+            desc: "updated random message one",
+            costCent: 123456,
+            createdAt: currDate,
+            doneAt: currDate,
+            progress: "PENDING",
+            employeeId: adminId,
+            clientId: createClient[1].id
+        })
+        .set('Authorization', `Bearer ${authTokenAdmin}`)
+
+        expect(response.status).toEqual(200);
+    })
+
+    test("PUT /job/:id route allow user access on same id ", async () => {
+        const createClient = await prisma.client.createManyAndReturn({
+            data: [
+                {name: "jay brown", email: "example1@gmail.com",phoneNumber: "223-223-2222", address: "2112 N asd adas Illinois", },
+                {name: "smtih rowe", email: "example2@gmail.com",phoneNumber: "253-123-2552", address: "7657 South lansingh", },
+            ]
+        });
+        const currDate = new Date();
+        
+        const createJobs = await prisma.job.createManyAndReturn({
+            data: [
+                {
+                    desc: "random message one",
+                    costCent: 234123,
+                    createdAt: currDate,
+                    doneAt: currDate,
+                    progress: "PAUSED",
+                    employeeId: adminId,
+                    clientId: createClient[0].id
+                },
+                {
+                    desc: "random message two",
+                    costCent: 321643,
+                    doneAt: currDate,
+                    createdAt: currDate,
+                    progress: "COMPLETED",
+                    employeeId: userId,
+                    clientId: createClient[1].id
+                }
+            ]
+        })
+
+        const response = await request(app)
+        .put(`/job/${createJobs[1].id}`)
+        .type("form")
+        .send({
+            desc: "updated random message one",
+            costCent: 123456,
+            createdAt: currDate,
+            doneAt: currDate,
+            progress: "PENDING",
+            employeeId: adminId,
+            clientId: createClient[1].id
+        })
+        .set('Authorization', `Bearer ${authTokenUser}`)
+
+        expect(response.status).toEqual(200);
+    })
+
+
+    test("PUT /job/:id route not allow user access on any id", async () => {
+        const createClient = await prisma.client.createManyAndReturn({
+            data: [
+                {name: "jay brown", email: "example1@gmail.com",phoneNumber: "223-223-2222", address: "2112 N asd adas Illinois", },
+                {name: "smtih rowe", email: "example2@gmail.com",phoneNumber: "253-123-2552", address: "7657 South lansingh", },
+            ]
+        });
+        const currDate = new Date();
+        
+        const createJobs = await prisma.job.createManyAndReturn({
+            data: [
+                {
+                    desc: "random message one",
+                    costCent: 234123,
+                    createdAt: currDate,
+                    doneAt: currDate,
+                    progress: "PAUSED",
+                    employeeId: adminId,
+                    clientId: createClient[0].id
+                },
+                {
+                    desc: "random message two",
+                    costCent: 321643,
+                    doneAt: currDate,
+                    createdAt: currDate,
+                    progress: "COMPLETED",
+                    employeeId: userId,
+                    clientId: createClient[1].id
+                }
+            ]
+        })
+
+        const response = await request(app)
+        .put(`/job/${createJobs[0].id}`)
+        .type("form")
+        .send({
+            desc: "updated random message one",
+            costCent: 123456,
+            createdAt: currDate,
+            doneAt: currDate,
+            progress: "PENDING",
+            employeeId: adminId,
+            clientId: createClient[1].id
+        })
+        .set('Authorization', `Bearer ${authTokenUser}`)
+
+        expect(response.status).toEqual(403);
+    })
+
+
+
 
 })
