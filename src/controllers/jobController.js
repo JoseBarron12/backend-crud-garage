@@ -1,3 +1,4 @@
+const { isAuth } = require('../config/authentication');
 const db = require('../db/jobDb');
 
 const jobListGet = async (req, res) => {
@@ -31,6 +32,13 @@ const jobListDelete = async (req, res, next) => {
 }
 
 const jobDelete = async(req, res, next) => {
+    const job = await db.getJobById(Number(req.params.id));
+    const auth = await isAuth(req,job.employeeId);
+
+    if(!auth) {
+        return res.sendStatus(403);
+    }
+    
     try {
         await db.deleteJobById(req.params.id)
         res.sendStatus(200);

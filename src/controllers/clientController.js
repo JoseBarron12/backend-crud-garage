@@ -32,6 +32,7 @@ const clientListDelete = async (req, res, next) => {
 
 const clientDelete = async (req, res, next) => {
     try {
+        
         await db.deleteClientById(req.params.id);
         res.sendStatus(200);
     } catch(err) {
