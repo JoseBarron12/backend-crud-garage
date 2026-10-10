@@ -49,9 +49,16 @@ const jobDelete = async(req, res, next) => {
 }
 
 const jobPut = async(req, res, next) => {
+    const job = await db.getJobById(Number(req.params.id));
+    const auth = await isAuth(req,job.employeeId);
+    
+    if(!auth) {
+        return res.sendStatus(403);
+    }
+    
     try {
         await db.updateJobById(req.params.id, req.body);
-        sendStatus(200);
+        res.sendStatus(200);
     } catch (err) {
         console.log(err);
         next(err);
