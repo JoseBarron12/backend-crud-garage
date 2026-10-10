@@ -55,6 +55,7 @@ describe("POST /login", () => {
             username: "jamal123",
             password: password
         })
+        expect(response.status).toEqual(200);
         expect(response.body).toHaveProperty("token");
 
     });
