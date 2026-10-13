@@ -386,3 +386,73 @@ describe("/employee post endpoint for invalid user username input" ,() => {
     })
 
 })
+
+describe("/employee post endpoint for invalid user password input" ,() => {
+    test("empty password user input", async () => {
+        const response = await request(app)
+            .post("/employee")
+            .type("form")
+            .send({
+                name: "dasdasd",
+                email: "random@gmail.com",
+                role: "USER",
+                phone: "2243872222",
+                username: "yuhyuh",
+                password: "",
+            })
+            .set('Authorization', `Bearer ${authTokenAdmin}`)
+            expect(response.status).toEqual(400);
+            expect(response.body.errorMsg).toEqual("Password is required.")
+    })
+    
+    test("invalid length password user input", async () => {
+        const response = await request(app)
+            .post("/employee")
+            .type("form")
+            .send({
+                name: "rdsadasd",
+                email: "random@gmail.com",
+                role: "USER",
+                phone: "2243872222",
+                username: "yuhyuh",
+                password: "1",
+            })
+            .set('Authorization', `Bearer ${authTokenAdmin}`)
+            expect(response.status).toEqual(400);
+            expect(response.body.errorMsg).toEqual("password must contain a lowercase, uppercase, special character, number, and 8 characters long.")
+    })
+
+    test("weak password user input", async () => {
+        const response = await request(app)
+            .post("/employee")
+            .type("form")
+            .send({
+                name: "gdfgdf",
+                email: "random@gmail.com",
+                role: "USER",
+                phone: "2243872222",
+                username: "yuhyuh",
+                password: "1101J",
+            })
+            .set('Authorization', `Bearer ${authTokenAdmin}`)
+            expect(response.status).toEqual(400);
+            expect(response.body.errorMsg).toEqual("password must contain a lowercase, uppercase, special character, number, and 8 characters long.")
+    })
+
+    test("valid name user input", async () => {
+        const response = await request(app)
+            .post("/employee")
+            .type("form")
+            .send({
+                name: "jamal o'brien",
+                email: "random@gmail.com",
+                role: "USER",
+                phone: "2243872222",
+                username: "yuhyuh",
+                password: "1101JAmal!2",
+            })
+            .set('Authorization', `Bearer ${authTokenAdmin}`)
+            expect(response.status).toEqual(200);
+    })
+
+})
