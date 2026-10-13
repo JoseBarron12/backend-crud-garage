@@ -262,3 +262,57 @@ describe("/employee post endpoint for invalid user role input" ,() => {
     })
 
 })
+
+
+describe("/employee post endpoint for invalid user phone input" ,() => {
+    test("empty phone user input", async () => {
+        const response = await request(app)
+            .post("/employee")
+            .type("form")
+            .send({
+                name: "dsadasd",
+                email: "random@gmail.com",
+                role: "USER",
+                phone: "",
+                username: "yuhyuh",
+                password: "1101JAmal!2",
+            })
+            .set('Authorization', `Bearer ${authTokenAdmin}`)
+            expect(response.status).toEqual(400);
+            expect(response.body.errorMsg).toEqual("Phone number is required.")
+    })
+    
+    test("invalid phone number user input", async () => {
+        const response = await request(app)
+            .post("/employee")
+            .type("form")
+            .send({
+                name: "ronalsdas",
+                email: "random@gmail.com",
+                role: "USER",
+                phone: "224343dsada",
+                username: "yuhyuh",
+                password: "1101JAmal!2",
+            })
+            .set('Authorization', `Bearer ${authTokenAdmin}`)
+            expect(response.status).toEqual(400);
+            expect(response.body.errorMsg).toEqual("must be a valid phone number.")
+    })
+
+    test("valid name user input", async () => {
+        const response = await request(app)
+            .post("/employee")
+            .type("form")
+            .send({
+                name: "jamal o'brien",
+                email: "random@gmail.com",
+                role: "USER",
+                phone: "2243872222",
+                username: "yuhyuh",
+                password: "1101JAmal!2",
+            })
+            .set('Authorization', `Bearer ${authTokenAdmin}`)
+            expect(response.status).toEqual(200);
+    })
+
+})
