@@ -71,7 +71,6 @@ beforeEach(async () => {
 
 });
 
-
 describe("/employee post endpoint for invalid user name input" ,() => {
     test("empty name user input", async () => {
         const response = await request(app)
@@ -141,3 +140,56 @@ describe("/employee post endpoint for invalid user name input" ,() => {
     })
 
 })
+
+describe("/employee post endpoint for invalid user email input" ,() => {
+    test("empty email user input", async () => {
+        const response = await request(app)
+            .post("/employee")
+            .type("form")
+            .send({
+                name: "dasdsa",
+                email: "",
+                role: "USER",
+                phone: "2243872222",
+                username: "yuhyuh",
+                password: "1101JAmal!2",
+            })
+            .set('Authorization', `Bearer ${authTokenAdmin}`)
+            expect(response.status).toEqual(400);
+            expect(response.body.errorMsg).toEqual("Email is required.")
+    })
+    
+    test("invalid email user input", async () => {
+        const response = await request(app)
+            .post("/employee")
+            .type("form")
+            .send({
+                name: "rdsadsad",
+                email: "random",
+                role: "USER",
+                phone: "2243872222",
+                username: "yuhyuh",
+                password: "1101JAmal!2",
+            })
+            .set('Authorization', `Bearer ${authTokenAdmin}`)
+            expect(response.status).toEqual(400);
+            expect(response.body.errorMsg).toEqual("must be a valid email.")
+    })
+
+    test("valid email user input", async () => {
+        const response = await request(app)
+            .post("/employee")
+            .type("form")
+            .send({
+                name: "jamal o'brien",
+                email: "random@gmail.com",
+                role: "USER",
+                phone: "2243872222",
+                username: "yuhyuh",
+                password: "1101JAmal!2",
+            })
+            .set('Authorization', `Bearer ${authTokenAdmin}`)
+            expect(response.status).toEqual(200);
+    })
+})
+
