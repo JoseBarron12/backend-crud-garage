@@ -130,9 +130,9 @@ describe("access protected route /employee" ,() => {
             name: "random name",
             email: "random@gmail.com",
             role: "USER",
-            phone: "224-387-2222",
+            phone: "2243872222",
             username: "yuhyuh",
-            password: "56347",
+            password: "1101JAmal!2",
         })
         .set('Authorization', `Bearer ${authTokenAdmin}`)
         expect(response.status).toEqual(200);
