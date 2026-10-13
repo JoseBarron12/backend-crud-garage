@@ -316,3 +316,73 @@ describe("/employee post endpoint for invalid user phone input" ,() => {
     })
 
 })
+
+describe("/employee post endpoint for invalid user username input" ,() => {
+    test("empty name user input", async () => {
+        const response = await request(app)
+            .post("/employee")
+            .type("form")
+            .send({
+                name: "dasdasd",
+                email: "random@gmail.com",
+                role: "USER",
+                phone: "2243872222",
+                username: "",
+                password: "1101JAmal!2",
+            })
+            .set('Authorization', `Bearer ${authTokenAdmin}`)
+            expect(response.status).toEqual(400);
+            expect(response.body.errorMsg).toEqual("Username is required.")
+    })
+    
+    test("invalid length username user input", async () => {
+        const response = await request(app)
+            .post("/employee")
+            .type("form")
+            .send({
+                name: "rdsadasd",
+                email: "random@gmail.com",
+                role: "USER",
+                phone: "2243872222",
+                username: "y",
+                password: "1101JAmal!2",
+            })
+            .set('Authorization', `Bearer ${authTokenAdmin}`)
+            expect(response.status).toEqual(400);
+            expect(response.body.errorMsg).toEqual("must be between 2 and 50 characters.")
+    })
+
+    test("invalid characters in username user input", async () => {
+        const response = await request(app)
+            .post("/employee")
+            .type("form")
+            .send({
+                name: "gdfgdf",
+                email: "random@gmail.com",
+                role: "USER",
+                phone: "2243872222",
+                username: "yd'/./sdasd.,.,",
+                password: "1101JAmal!2",
+            })
+            .set('Authorization', `Bearer ${authTokenAdmin}`)
+            expect(response.status).toEqual(400);
+            expect(response.body.errorMsg).toEqual("must only contain letters and numbers.")
+    })
+
+    test("valid name user input", async () => {
+        const response = await request(app)
+            .post("/employee")
+            .type("form")
+            .send({
+                name: "jamal o'brien",
+                email: "random@gmail.com",
+                role: "USER",
+                phone: "2243872222",
+                username: "yuhyuh",
+                password: "1101JAmal!2",
+            })
+            .set('Authorization', `Bearer ${authTokenAdmin}`)
+            expect(response.status).toEqual(200);
+    })
+
+})
