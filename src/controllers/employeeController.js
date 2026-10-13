@@ -1,5 +1,8 @@
 const { isAdmin, isAuth } = require('../config/authentication');
+const { validateEmployeePost } = require('../config/input');
 const db = require('../db/employeeDb')
+const {validationResult, matchedData } = require("express-validator");
+
 
 const employeeListGet = async (req, res) => {
     const employees = await db.getAllEmployees();
@@ -18,15 +21,22 @@ const employeeGet = async (req, res) => {
     res.json({employee});
 }
 
-const employeePost = async (req,res, next) => {
-    try{
-        await db.createEmployee(req.body);
+const employeePost = [
+    validateEmployeePost,
+    async (req,res, next) => {
+    const errors = validationResult(req);
+    if(!errors.isEmpty()) {
+        const errorMsg = errors.array()[0].msg;
+        return res.status(400).json({errorMsg});
+    }
+    try {
+        await db.createEmployee(matchedData(req));
         res.sendStatus(200);
     } catch (err) {
         console.log(err);
         next(err)
     }
-}
+}]
 
 const employeeListDelete = async(req, res, next) => {
     try {
