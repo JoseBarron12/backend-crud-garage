@@ -193,3 +193,72 @@ describe("/employee post endpoint for invalid user email input" ,() => {
     })
 })
 
+describe("/employee post endpoint for invalid user role input" ,() => {
+    test("empty name user input", async () => {
+        const response = await request(app)
+            .post("/employee")
+            .type("form")
+            .send({
+                name: "fdfsdf",
+                email: "random@gmail.com",
+                role: "",
+                phone: "2243872222",
+                username: "yuhyuh",
+                password: "1101JAmal!2",
+            })
+            .set('Authorization', `Bearer ${authTokenAdmin}`)
+            expect(response.status).toEqual(400);
+            expect(response.body.errorMsg).toEqual("Role is required.")
+    })
+    
+    test("invalid character within role user input", async () => {
+        const response = await request(app)
+            .post("/employee")
+            .type("form")
+            .send({
+                name: "rdsada",
+                email: "random@gmail.com",
+                role: "4432s",
+                phone: "2243872222",
+                username: "yuhyuh",
+                password: "1101JAmal!2",
+            })
+            .set('Authorization', `Bearer ${authTokenAdmin}`)
+            expect(response.status).toEqual(400);
+            expect(response.body.errorMsg).toEqual("must only contain letters.")
+    })
+
+    test("invalid role user input", async () => {
+        const response = await request(app)
+            .post("/employee")
+            .type("form")
+            .send({
+                name: "gdfgdfg",
+                email: "random@gmail.com",
+                role: "REGULAR",
+                phone: "2243872222",
+                username: "yuhyuh",
+                password: "1101JAmal!2",
+            })
+            .set('Authorization', `Bearer ${authTokenAdmin}`)
+            expect(response.status).toEqual(400);
+            expect(response.body.errorMsg).toEqual("must be a valid role.")
+    })
+
+    test("valid role user input", async () => {
+        const response = await request(app)
+            .post("/employee")
+            .type("form")
+            .send({
+                name: "jamal o'brien",
+                email: "random@gmail.com",
+                role: "USER",
+                phone: "2243872222",
+                username: "yuhyuh",
+                password: "1101JAmal!2",
+            })
+            .set('Authorization', `Bearer ${authTokenAdmin}`)
+            expect(response.status).toEqual(200);
+    })
+
+})
