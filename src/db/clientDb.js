@@ -28,7 +28,7 @@ async function createClient(data) {
         data: {
             name: data.name,
             email: data.email,
-            phoneNumber: data.phone,
+            phoneNumber: data.phoneNumber,
             address: data.address,
 
         }

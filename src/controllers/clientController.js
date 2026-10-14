@@ -1,4 +1,7 @@
-const db = require('../db/clientDb')
+const { validateClientPost } = require('../config/input');
+const db = require('../db/clientDb');
+const {validationResult, matchedData } = require("express-validator");
+
 
 const clientListGet = async (req, res) => {
     const clients = await db.getAllClients();
@@ -10,15 +13,24 @@ const clientGet = async (req, res) => {
     res.json({client});
 }
 
-const clientPost = async (req, res, next) => {
-    try{
-        await db.createClient(req.body);
-        res.sendStatus(200);
-    } catch (err) {
-        console.log(err);
-        next(err)
-    }
-}
+const clientPost = [
+    validateClientPost,
+    async (req, res, next) => {
+        const errors = validationResult(req);
+        
+        if(!errors.isEmpty()) {
+            const errorMsg = errors.array()[0].msg;
+            return res.status(400).json({errorMsg});
+        }
+        
+        try {
+            await db.createClient(matchedData(req));
+            res.sendStatus(200);
+        } catch (err) {
+            console.log(err);
+            next(err)
+        }
+}]
 
 const clientListDelete = async (req, res, next) => {
     try {

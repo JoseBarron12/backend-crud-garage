@@ -49,7 +49,29 @@ const validateEmployeePost = [
     .isStrongPassword().withMessage("password must contain a lowercase, uppercase, special character, number, and 8 characters long."),
 ]
 
+const validateClientPost = [
+    body("name")
+    .notEmpty().withMessage(emptyErrMsg("Name"))
+    .isLength({min: 2, max: 50}).withMessage(lengthErrMsg(2, 50))
+    .matches(/^[A-Za-z\s\-']+$/).withMessage(validErrMsg("name")),
+    
+    body("email").trim()
+    .notEmpty().withMessage(emptyErrMsg("Email"))
+    .isEmail().withMessage(validErrMsg("email"))
+    .normalizeEmail(),
+
+    body("phoneNumber").trim()
+    .notEmpty().withMessage(emptyErrMsg("Phone number"))
+    .matches(/^[0-9]{10}$/g).withMessage(validErrMsg("phone number")),
+
+    body("address")
+    .notEmpty().withMessage(emptyErrMsg("Address"))
+    .escape()
+    .isLength({min: 15, max: 50}).withMessage(lengthErrMsg(15, 50))
+]
+
 
 module.exports = {
-    validateEmployeePost
+    validateEmployeePost, 
+    validateClientPost
 }
