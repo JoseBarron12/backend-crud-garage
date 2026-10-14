@@ -456,3 +456,65 @@ describe("/employee post endpoint for invalid user password input" ,() => {
     })
 
 })
+
+describe("/client post endpoint for invalid user name input" ,() => {
+    test("empty name user input", async () => {
+        const response = await request(app)
+            .post("/client")
+            .type("form")
+            .send({
+                name: "",
+                email: "filler@gmail.com",
+                phoneNumber: "3345469832",
+                address: "23 S Brokhill New Jersey 34422",
+            })
+            .set('Authorization', `Bearer ${authTokenAdmin}`)
+            expect(response.status).toEqual(400);
+            expect(response.body.errorMsg).toEqual("Name is required.")
+    })
+    
+    test("invalid length name user input", async () => {
+        const response = await request(app)
+            .post("/client")
+            .type("form")
+            .send({
+                name: "r",
+                email: "filler@gmail.com",
+                phoneNumber: "3345469832",
+                address: "23 S Brokhill New Jersey 34422",
+            })
+            .set('Authorization', `Bearer ${authTokenAdmin}`)
+            expect(response.status).toEqual(400);
+            expect(response.body.errorMsg).toEqual("must be between 2 and 50 characters.")
+    })
+
+    test("invalid characters in name user input", async () => {
+        const response = await request(app)
+            .post("/client")
+            .type("form")
+            .send({
+                name: "543gdfgdfgdf",
+                email: "filler@gmail.com",
+                phoneNumber: "3345469832",
+                address: "23 S Brokhill New Jersey 34422",
+            })
+            .set('Authorization', `Bearer ${authTokenAdmin}`)
+            expect(response.status).toEqual(400);
+            expect(response.body.errorMsg).toEqual("must be a valid name.")
+    })
+
+    test("valid name user input", async () => {
+        const response = await request(app)
+            .post("/client")
+            .type("form")
+            .send({
+                name: "jamal o'brien",
+                email: "filler@gmail.com",
+                phoneNumber: "3345469832",
+                address: "23 S Brokhill New Jersey 34422",
+            })
+            .set('Authorization', `Bearer ${authTokenAdmin}`)
+            expect(response.status).toEqual(200);
+    })
+
+})
