@@ -564,3 +564,50 @@ describe("/client post endpoint for invalid user email input" ,() => {
             expect(response.status).toEqual(200);
     })
 })
+
+describe("/employee post endpoint for invalid user phone input" ,() => {
+    test("empty phone user input", async () => {
+        const response = await request(app)
+            .post("/client")
+            .type("form")
+            .send({
+                name: "jamal o'brien",
+                email: "filler@gmail.com",
+                phoneNumber: "",
+                address: "23 S Brokhill New Jersey 34422",
+            })
+            .set('Authorization', `Bearer ${authTokenAdmin}`)
+            expect(response.status).toEqual(400);
+            expect(response.body.errorMsg).toEqual("Phone number is required.")
+    })
+    
+    test("invalid phone number user input", async () => {
+        const response = await request(app)
+            .post("/client")
+            .type("form")
+            .send({
+                name: "jamal o'brien",
+                email: "filler@gmail.com",
+                phoneNumber: "334546wef9832",
+                address: "23 S Brokhill New Jersey 34422",
+            })
+            .set('Authorization', `Bearer ${authTokenAdmin}`)
+            expect(response.status).toEqual(400);
+            expect(response.body.errorMsg).toEqual("must be a valid phone number.")
+    })
+
+    test("valid phone number user input", async () => {
+        const response = await request(app)
+            .post("/client")
+            .type("form")
+            .send({
+                name: "jamal o'brien",
+                email: "filler@gmail.com",
+                phoneNumber: "3345469832",
+                address: "23 S Brokhill New Jersey 34422",
+            })
+            .set('Authorization', `Bearer ${authTokenAdmin}`)
+            expect(response.status).toEqual(200);
+    })
+
+})
