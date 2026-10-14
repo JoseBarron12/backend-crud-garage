@@ -518,3 +518,49 @@ describe("/client post endpoint for invalid user name input" ,() => {
     })
 
 })
+
+describe("/client post endpoint for invalid user email input" ,() => {
+    test("empty email user input", async () => {
+        const response = await request(app)
+            .post("/client")
+            .type("form")
+            .send({
+                name: "jamal o'brien",
+                email: "",
+                phoneNumber: "3345469832",
+                address: "23 S Brokhill New Jersey 34422",
+            })
+            .set('Authorization', `Bearer ${authTokenAdmin}`)
+            expect(response.status).toEqual(400);
+            expect(response.body.errorMsg).toEqual("Email is required.")
+    })
+    
+    test("invalid email user input", async () => {
+        const response = await request(app)
+            .post("/client")
+            .type("form")
+            .send({
+                name: "jamal o'brien",
+                email: "filler@gma",
+                phoneNumber: "3345469832",
+                address: "23 S Brokhill New Jersey 34422",
+            })
+            .set('Authorization', `Bearer ${authTokenAdmin}`)
+            expect(response.status).toEqual(400);
+            expect(response.body.errorMsg).toEqual("must be a valid email.")
+    })
+
+    test("valid email user input", async () => {
+        const response = await request(app)
+            .post("/client")
+            .type("form")
+            .send({
+                name: "jamal o'brien",
+                email: "filler@gmail.com",
+                phoneNumber: "3345469832",
+                address: "23 S Brokhill New Jersey 34422",
+            })
+            .set('Authorization', `Bearer ${authTokenAdmin}`)
+            expect(response.status).toEqual(200);
+    })
+})
