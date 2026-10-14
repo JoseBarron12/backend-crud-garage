@@ -611,3 +611,50 @@ describe("/client post endpoint for invalid user phone input" ,() => {
     })
 
 })
+
+describe("/client post endpoint for invalid user address input" ,() => {
+    test("empty address user input", async () => {
+        const response = await request(app)
+            .post("/client")
+            .type("form")
+            .send({
+                name: "afasd",
+                email: "filler@gmail.com",
+                phoneNumber: "3345469832",
+                address: "",
+            })
+            .set('Authorization', `Bearer ${authTokenAdmin}`)
+            expect(response.status).toEqual(400);
+            expect(response.body.errorMsg).toEqual("Address is required.")
+    })
+    
+    test("invalid address user input", async () => {
+        const response = await request(app)
+            .post("/client")
+            .type("form")
+            .send({
+                name: "rdsadasd",
+                email: "filler@gmail.com",
+                phoneNumber: "3345469832",
+                address: "23",
+            })
+            .set('Authorization', `Bearer ${authTokenAdmin}`)
+            expect(response.status).toEqual(400);
+            expect(response.body.errorMsg).toEqual("must be between 15 and 50 characters.")
+    })
+
+    test("valid name user input", async () => {
+        const response = await request(app)
+            .post("/client")
+            .type("form")
+            .send({
+                name: "jamal o'brien",
+                email: "filler@gmail.com",
+                phoneNumber: "3345469832",
+                address: "23 S Brokhill New Jersey 34422",
+            })
+            .set('Authorization', `Bearer ${authTokenAdmin}`)
+            expect(response.status).toEqual(200);
+    })
+
+})
