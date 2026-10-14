@@ -565,7 +565,7 @@ describe("/client post endpoint for invalid user email input" ,() => {
     })
 })
 
-describe("/employee post endpoint for invalid user phone input" ,() => {
+describe("/client post endpoint for invalid user phone input" ,() => {
     test("empty phone user input", async () => {
         const response = await request(app)
             .post("/client")
