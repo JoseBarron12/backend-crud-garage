@@ -1,6 +1,6 @@
 const { validationResult, matchedData } = require('express-validator');
 const { isAuth } = require('../config/authentication');
-const { validateJobPost } = require('../config/input');
+const { validateJobPost, validateEmployeePut } = require('../config/input');
 const db = require('../db/jobDb');
 
 const jobListGet = async (req, res) => {
@@ -60,7 +60,9 @@ const jobDelete = async(req, res, next) => {
     }
 }
 
-const jobPut = async(req, res, next) => {
+const jobPut = [
+    validateEmployeePut, 
+    async(req, res, next) => {
     const job = await db.getJobById(Number(req.params.id));
     const auth = await isAuth(req,job.employeeId);
     
@@ -68,14 +70,20 @@ const jobPut = async(req, res, next) => {
         return res.sendStatus(403);
     }
     
+    const errors = validationResult(req);
+    if(!errors.isEmpty()) {
+        const errorMsg = errors.array()[0].msg;
+        return res.status(400).json({errorMsg});
+    }
+
     try {
-        await db.updateJobById(req.params.id, req.body);
+        await db.updateJobById(req.params.id, matchedData(req));
         res.sendStatus(200);
     } catch (err) {
         console.log(err);
         next(err);
     }
-}
+}]
 
 module.exports = {
     jobListGet,

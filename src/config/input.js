@@ -186,10 +186,71 @@ const validateJobPost = [
 
 ]
 
+const validateJobPut = [
+    body("desc")
+    .optional({ values: "falsy" })
+    .notEmpty().withMessage(emptyErrMsg("Description"))
+    .escape()
+    .isLength({min: 15, max: 500}).withMessage(lengthErrMsg(15, 500)),
+    
+    body("costCent")
+    .optional({ values: "falsy" })
+    .notEmpty().withMessage(emptyErrMsg("Cost"))
+    .isInt({min: 1}).withMessage(validErrMsg("number"))
+    .toInt(),
+    
+    body("createdAt")
+    .optional({ values: "falsy" })
+    .notEmpty().withMessage(emptyErrMsg("Created Date"))
+    .isISO8601().withMessage(validErrMsg("ISO 8601 date")),
+    
+    body("doneAt")
+    .optional({ values: "falsy" })
+    .notEmpty().withMessage(emptyErrMsg("Done Date"))
+    .isISO8601().withMessage(validErrMsg("ISO 8601 date"))
+    .custom((value, {req}) => {
+        return value > req.body.createdAt
+    }).withMessage(validErrMsg("date that is past created date")),
+
+    body("progress")
+    .optional({ values: "falsy" }).trim()
+    .notEmpty().withMessage(emptyErrMsg("Progress"))
+    .isAlpha().withMessage(containErrMsg("letters"))
+    .custom((value) => {
+        return (value === "COMPLETED" || value === "INPROGRESS" || value === "PENDING" || value === "CANCELED" || value === "PAUSED")
+    }).withMessage(validErrMsg("progress")),
+
+    body("employeeId")
+    .optional({ values: "falsy" })
+    .notEmpty().withMessage(emptyErrMsg("Employee"))
+    .isInt().withMessage(validErrMsg("number"))
+    .toInt()
+    .custom(async value => {
+        const response = await getEmployeeById(value);
+        if(response === null) return false;
+        return true;
+    }).withMessage(validErrMsg("employee id")),
+
+    body("clientId")
+    .optional({ values: "falsy" })
+    .notEmpty().withMessage(emptyErrMsg("Client"))
+    .isInt().withMessage(validErrMsg("number"))
+    .toInt()
+    .custom(async (value) => {
+        const response = await getClientById(value);
+        if(response === null) return false;
+        return true;
+    }).withMessage(validErrMsg("client id")),
+
+]
+
+
+
 module.exports = {
     validateEmployeePost, 
     validateEmployeePut,
     validateClientPost,
     validateClientPut,
-    validateJobPost
+    validateJobPost,
+    validateJobPut
 }
