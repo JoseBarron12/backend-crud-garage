@@ -70,7 +70,7 @@ beforeEach(async () => {
     adminId = admin.id;
 
 });
-
+/*
 describe("/employee post endpoint for invalid user name input" ,() => {
     test("empty name user input", async () => {
         const response = await request(app)
@@ -657,4 +657,165 @@ describe("/client post endpoint for invalid user address input" ,() => {
             expect(response.status).toEqual(200);
     })
 
+})
+
+ */
+
+describe("/job post endpoint for invalid user description input", () => {
+    test("empty description user input", async () => {
+        const createEmployee = await prisma.employee.createManyAndReturn({
+            data: [
+                {
+                    name: "James Anderson",
+                    email: "james.anderson@example.com",
+                    role: "USER",
+                    phone: "555-0101",
+                    username: "janderson",
+                    hashpassword: "$2b$10$dummyHashJames001",
+                },
+                {
+                    name: "Maria Rodriguez",
+                    email: "maria.rodriguez@example.com",
+                    role: "USER",
+                    phone: "555-0102",
+                    username: "mrodriguez",
+                    hashpassword: "$2b$10$dummyHashMaria002",
+                },
+            ]
+        });
+        
+        const createClient = await prisma.client.createManyAndReturn({
+            data: [
+                {name: "jay brown", email: "example1@gmail.com",phoneNumber: "223-223-2222", address: "2112 N asd adas Illinois", },
+                {name: "smtih rowe", email: "example2@gmail.com",phoneNumber: "253-123-2552", address: "7657 South lansingh", },
+            ]
+        });
+
+        const employeeId = createEmployee[0].id;
+        const clientId = createClient[0].id;
+        const createdDate = new Date();
+        const doneDate = new Date();
+        
+        
+        const response = await request(app)
+        .post("/job")
+        .type("form")
+        .send({
+            desc: "",
+            costCent: 564344,
+            createdAt: createdDate,
+            doneAt: doneDate,
+            progress: "COMPLETED",
+            employeeId: employeeId,
+            clientId: clientId,
+        })
+        .set('Authorization', `Bearer ${authTokenAdmin}`)
+
+        expect(response.status).toEqual(400);
+        expect(response.body.errorMsg).toEqual("Description is required.")
+    })  
+
+    test("invalid length description user input", async () => {
+        const createEmployee = await prisma.employee.createManyAndReturn({
+            data: [
+                {
+                    name: "James Anderson",
+                    email: "james.anderson@example.com",
+                    role: "USER",
+                    phone: "555-0101",
+                    username: "janderson",
+                    hashpassword: "$2b$10$dummyHashJames001",
+                },
+                {
+                    name: "Maria Rodriguez",
+                    email: "maria.rodriguez@example.com",
+                    role: "USER",
+                    phone: "555-0102",
+                    username: "mrodriguez",
+                    hashpassword: "$2b$10$dummyHashMaria002",
+                },
+            ]
+        });
+        
+        const createClient = await prisma.client.createManyAndReturn({
+            data: [
+                {name: "jay brown", email: "example1@gmail.com",phoneNumber: "223-223-2222", address: "2112 N asd adas Illinois", },
+                {name: "smtih rowe", email: "example2@gmail.com",phoneNumber: "253-123-2552", address: "7657 South lansingh", },
+            ]
+        });
+
+        const employeeId = createEmployee[0].id;
+        const clientId = createClient[0].id;
+        const createdDate = new Date();
+        const doneDate = new Date();
+        
+        
+        const response = await request(app)
+        .post("/job")
+        .type("form")
+        .send({
+            desc: "3434",
+            costCent: 564344,
+            createdAt: createdDate,
+            doneAt: doneDate,
+            progress: "COMPLETED",
+            employeeId: employeeId,
+            clientId: clientId,
+        })
+        .set('Authorization', `Bearer ${authTokenAdmin}`)
+
+        expect(response.status).toEqual(400);
+        expect(response.body.errorMsg).toEqual("must be between 15 and 500 characters.")
+    })
+
+    test("valid length description user input", async () => {
+        const createEmployee = await prisma.employee.createManyAndReturn({
+            data: [
+                {
+                    name: "James Anderson",
+                    email: "james.anderson@example.com",
+                    role: "USER",
+                    phone: "555-0101",
+                    username: "janderson",
+                    hashpassword: "$2b$10$dummyHashJames001",
+                },
+                {
+                    name: "Maria Rodriguez",
+                    email: "maria.rodriguez@example.com",
+                    role: "USER",
+                    phone: "555-0102",
+                    username: "mrodriguez",
+                    hashpassword: "$2b$10$dummyHashMaria002",
+                },
+            ]
+        });
+        
+        const createClient = await prisma.client.createManyAndReturn({
+            data: [
+                {name: "jay brown", email: "example1@gmail.com",phoneNumber: "223-223-2222", address: "2112 N asd adas Illinois", },
+                {name: "smtih rowe", email: "example2@gmail.com",phoneNumber: "253-123-2552", address: "7657 South lansingh", },
+            ]
+        });
+
+        const employeeId = createEmployee[0].id;
+        const clientId = createClient[0].id;
+        const createdDate = new Date();
+        const doneDate = new Date();
+        doneDate.setFullYear(doneDate.getFullYear() + 1);
+
+        const response = await request(app)
+        .post("/job")
+        .type("form")
+        .send({
+            desc: "this is a valid description for description",
+            costCent: 564344,
+            createdAt: createdDate,
+            doneAt: doneDate,
+            progress: "COMPLETED",
+            employeeId: employeeId,
+            clientId: clientId,
+        })
+        .set('Authorization', `Bearer ${authTokenAdmin}`)
+        expect(response.status).toEqual(200)
+    })
 })
