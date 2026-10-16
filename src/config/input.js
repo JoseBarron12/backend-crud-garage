@@ -1,4 +1,6 @@
 const { body } = require("express-validator")
+const { getEmployeeById } = require("../db/employeeDb")
+const { getClientById } = require("../db/clientDb")
 
 const emptyErrMsg = (field) => {
     return `${field} is required.`
@@ -70,8 +72,59 @@ const validateClientPost = [
     .isLength({min: 15, max: 50}).withMessage(lengthErrMsg(15, 50))
 ]
 
+const validateJobPost = [
+    body("desc")
+    .notEmpty().withMessage(emptyErrMsg("Description"))
+    .escape()
+    .isLength({min: 15, max: 500}).withMessage(lengthErrMsg(15, 500)),
+    
+    body("costCent")
+    .notEmpty().withMessage(emptyErrMsg("Cost"))
+    .isInt({min: 1}).withMessage(validErrMsg("number"))
+    .toInt(),
+    
+    body("createdAt")
+    .notEmpty().withMessage(emptyErrMsg("Created Date"))
+    .isISO8601().withMessage(validErrMsg("ISO 8601 date")),
+    
+    body("doneAt")
+    .notEmpty().withMessage(emptyErrMsg("Done Date"))
+    .isISO8601().withMessage(validErrMsg("ISO 8601 date"))
+    .custom((value, {req}) => {
+        return value > req.body.createdAt
+    }).withMessage(validErrMsg("date that is past created date")),
+
+    body("progress").trim()
+    .notEmpty().withMessage(emptyErrMsg("Progress"))
+    .isAlpha().withMessage(containErrMsg("letters"))
+    .custom((value) => {
+        return (value === "COMPLETED" || value === "INPROGRESS" || value === "PENDING" || value === "CANCELED" || value === "PAUSED")
+    }).withMessage(validErrMsg("progress")),
+
+    body("employeeId")
+    .notEmpty().withMessage(emptyErrMsg("Employee"))
+    .isInt().withMessage(validErrMsg("number"))
+    .toInt()
+    .custom(async value => {
+        const response = await getEmployeeById(value);
+        if(response === null) return false;
+        return true;
+    }).withMessage(validErrMsg("employee id")),
+
+    body("clientId")
+    .notEmpty().withMessage(emptyErrMsg("Client"))
+    .isInt().withMessage(validErrMsg("number"))
+    .toInt()
+    .custom(async (value) => {
+        const response = await getClientById(value);
+        if(response === null) return false;
+        return true;
+    }).withMessage(validErrMsg("client id")),
+
+]
 
 module.exports = {
     validateEmployeePost, 
-    validateClientPost
+    validateClientPost,
+    validateJobPost
 }
