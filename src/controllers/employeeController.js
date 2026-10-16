@@ -1,5 +1,5 @@
 const { isAdmin, isAuth } = require('../config/authentication');
-const { validateEmployeePost } = require('../config/input');
+const { validateEmployeePost, validateEmployeePut } = require('../config/input');
 const db = require('../db/employeeDb')
 const {validationResult, matchedData } = require("express-validator");
 
@@ -58,14 +58,20 @@ const employeeDelete = async (req , res, next) => {
     }
 }
 
-const employeePut = async (req, res, next) => {
-    
+const employeePut = [ 
+    validateEmployeePut,
+    async (req, res, next) => {
     const auth = await isAuth(req,req.params.id);
-
     if(!auth) {
         return res.sendStatus(403);
     }
     
+    const errors = validationResult(req);
+    if(!errors.isEmpty()) {
+        const errorMsg = errors.array()[0].msg;
+        return res.status(400).json({errorMsg});
+    }
+
     try {
         await db.updateEmployeeById(req.params.id, req.body);
         res.sendStatus(200);
@@ -74,6 +80,7 @@ const employeePut = async (req, res, next) => {
         next(err);
     }
 }
+]
 
 
 module.exports = {
