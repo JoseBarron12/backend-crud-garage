@@ -1,4 +1,4 @@
-const { validationResult } = require('express-validator');
+const { validationResult, matchedData } = require('express-validator');
 const { isAuth } = require('../config/authentication');
 const { validateJobPost } = require('../config/input');
 const db = require('../db/jobDb');
@@ -24,7 +24,7 @@ const jobPost = [
     }
     
     try {
-        await db.createJob(req.body);
+        await db.createJob(matchedData(req));
         res.sendStatus(200);
     }catch (err) {
         console.log(err);
