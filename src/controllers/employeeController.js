@@ -73,7 +73,7 @@ const employeePut = [
     }
 
     try {
-        await db.updateEmployeeById(req.params.id, req.body);
+        await db.updateEmployeeById(req.params.id, matchedData(req));
         res.sendStatus(200);
     } catch(err) {
         console.log(err);

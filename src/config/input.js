@@ -58,37 +58,36 @@ const validateEmployeePut = [
     .isLength({min: 2, max: 50}).withMessage(lengthErrMsg(2, 50))
     .matches(/^[A-Za-z\s\-']+$/).withMessage(validErrMsg("name")),
     
-    body("email").trim()
-    .optional({ values: "falsy" })
+    body("email")
+    .optional({ values: "falsy" }).trim()
     .notEmpty().withMessage(emptyErrMsg("Email"))
     .isEmail().withMessage(validErrMsg("email"))
     .normalizeEmail(),
     
-    body("role").trim()
-    .optional({ values: "falsy" })
+    body("role")
+    .optional({ values: "falsy" }).trim()
     .notEmpty().withMessage(emptyErrMsg("Role"))
     .isAlpha().withMessage(containErrMsg("letters"))
     .custom((value) => {
         return (value === "USER" || value === "ADMIN")
     }).withMessage(validErrMsg("role")),
 
-    body("phone").trim()
-    .optional({ values: "falsy" })
+    body("phone")
+    .optional({ values: "falsy" }).trim()
     .notEmpty().withMessage(emptyErrMsg("Phone number"))
     .matches(/^[0-9]{10}$/g).withMessage(validErrMsg("phone number")),
 
-    body("username").trim()
-    .optional({ values: "falsy" })
+    body("username")
+    .optional({ values: "falsy" }).trim()
     .notEmpty().withMessage(emptyErrMsg("Username"))
     .isAlphanumeric().withMessage(containErrMsg("letters and numbers"))
     .isLength({min: 2, max: 50}).withMessage(lengthErrMsg(2, 50)),
 
-    body("password").trim()
-    .optional({ values: "falsy" })
+    body("password")
+    .optional({ values: "falsy" }).trim()
     .notEmpty().withMessage(emptyErrMsg("Password"))
     .isStrongPassword().withMessage("password must contain a lowercase, uppercase, special character, number, and 8 characters long."),
 ]
-
 
 const validateClientPost = [
     body("name")
@@ -106,6 +105,31 @@ const validateClientPost = [
     .matches(/^[0-9]{10}$/g).withMessage(validErrMsg("phone number")),
 
     body("address")
+    .notEmpty().withMessage(emptyErrMsg("Address"))
+    .escape()
+    .isLength({min: 15, max: 50}).withMessage(lengthErrMsg(15, 50))
+]
+
+const validateClientPut = [
+    body("name")
+    .optional({ values: "falsy" })
+    .notEmpty().withMessage(emptyErrMsg("Name"))
+    .isLength({min: 2, max: 50}).withMessage(lengthErrMsg(2, 50))
+    .matches(/^[A-Za-z\s\-']+$/).withMessage(validErrMsg("name")),
+    
+    body("email")
+    .optional({ values: "falsy" }).trim()
+    .notEmpty().withMessage(emptyErrMsg("Email"))
+    .isEmail().withMessage(validErrMsg("email"))
+    .normalizeEmail(),
+
+    body("phoneNumber")
+    .optional({ values: "falsy" }).trim()
+    .notEmpty().withMessage(emptyErrMsg("Phone number"))
+    .matches(/^[0-9]{10}$/g).withMessage(validErrMsg("phone number")),
+
+    body("address")
+    .optional({ values: "falsy" })
     .notEmpty().withMessage(emptyErrMsg("Address"))
     .escape()
     .isLength({min: 15, max: 50}).withMessage(lengthErrMsg(15, 50))
@@ -166,5 +190,6 @@ module.exports = {
     validateEmployeePost, 
     validateEmployeePut,
     validateClientPost,
+    validateClientPut,
     validateJobPost
 }
