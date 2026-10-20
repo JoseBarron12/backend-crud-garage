@@ -32,14 +32,13 @@ async function getEmployeeByUsername(username) {
 }
 
 
-
-async function createEmployee(data) {
+async function createEmployee(data, isReg = false) {
     
     const findEmployee = await getEmployeeByUsername(data.username);
     if(findEmployee) throw new CustomFoundError("Username is already in use.");
     
     const hashpassword = await bcrypt.hash(data.password, 10);
-    await prisma.employee.create({
+    const employee = await prisma.employee.create({
         data: {
             name: data.name,
             email: data.email,
@@ -49,6 +48,8 @@ async function createEmployee(data) {
             hashpassword: hashpassword,
         }
     })
+
+    if(isReg) return employee
 }
 
 async function deleteAllEmployees() {

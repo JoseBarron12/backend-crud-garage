@@ -16,8 +16,16 @@ const employeeRegister = [
     }
     
     try {
-        await createEmployee(matchedData(req));
-        res.sendStatus(200);
+        const employee = await createEmployee(matchedData(req), true);
+
+        const payload = { id: employee.id, username: employee.username}
+
+        jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: '30d'}, (err, token) => {
+            if(err) throw err;
+            res.json({
+                token: token,
+            })
+        });
     } catch (err) {
         next(err);
     }
