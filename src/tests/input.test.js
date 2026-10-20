@@ -70,7 +70,7 @@ beforeEach(async () => {
     adminId = admin.id;
 
 });
-/*
+
 describe("/employee post endpoint for invalid user name input" ,() => {
     test("empty name user input", async () => {
         const response = await request(app)
@@ -659,7 +659,6 @@ describe("/client post endpoint for invalid user address input" ,() => {
 
 })
 
- */
 
 describe("/job post endpoint for invalid user description input", () => {
     test("empty description user input", async () => {
