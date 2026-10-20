@@ -16,7 +16,7 @@ beforeEach(async () => {
 });
 
 describe("POST /register", () => {
-    test("POST request to create new employee" ,(done) => {
+    test("POST request to create new employee" , (done) => {
         request(app)
         .post("/auth/register")
         .type("form")
@@ -30,6 +30,34 @@ describe("POST /register", () => {
         })
         .expect(200, done)
     });
+
+    test("POST request to create new employee w/ exisiting username", async() => {
+        const newEmployee = await prisma.employee.create({
+            data: {
+                username: "jamal123",
+                hashpassword: "hashpassword",
+                email: "example@gmail.com",
+                role: "USER",
+                phone: "223-456-3333",
+                name: "jamal hersum"
+            }
+        })
+        
+        const response = await request(app).post("/auth/register")
+        .type("form")
+        .send({
+            name: "jamal hersum",
+            email: "example@gmail.com",
+            role: "USER",
+            phone: "2245463333",
+            username: "jamal123",
+            password: "1101JAmal!2"
+        });
+
+        expect(response.status).toEqual(400);
+        expect(response.body.errorMsg).toEqual("Username is already in use.")
+    })
+
 });
 
 describe("POST /login", () => {
