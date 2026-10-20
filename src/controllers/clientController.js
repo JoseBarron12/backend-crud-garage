@@ -27,7 +27,6 @@ const clientPost = [
             await db.createClient(matchedData(req));
             res.sendStatus(200);
         } catch (err) {
-            console.log(err);
             next(err)
         }
 }]
@@ -37,7 +36,6 @@ const clientListDelete = async (req, res, next) => {
         await db.deleteAllClients();
         res.sendStatus(200);
     } catch(err) {
-        console.log(err);
         next(err);
     }
 }
@@ -48,7 +46,6 @@ const clientDelete = async (req, res, next) => {
         await db.deleteClientById(req.params.id);
         res.sendStatus(200);
     } catch(err) {
-        console.log(err);
         next(err);
     }
 }

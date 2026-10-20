@@ -27,7 +27,6 @@ const jobPost = [
         await db.createJob(matchedData(req));
         res.sendStatus(200);
     }catch (err) {
-        console.log(err);
         next(err);
     }
 }
@@ -38,7 +37,6 @@ const jobListDelete = async (req, res, next) => {
         await db.deleteAllJobs();
         res.sendStatus(200);
     } catch (err) {
-        console.log(err);
         next(err);
     }
 }
@@ -55,7 +53,6 @@ const jobDelete = async(req, res, next) => {
         await db.deleteJobById(req.params.id)
         res.sendStatus(200);
     } catch(err) {
-        console.log(err);
         next(err);
     }
 }
@@ -80,7 +77,6 @@ const jobPut = [
         await db.updateJobById(req.params.id, matchedData(req));
         res.sendStatus(200);
     } catch (err) {
-        console.log(err);
         next(err);
     }
 }]

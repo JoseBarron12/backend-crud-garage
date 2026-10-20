@@ -33,7 +33,6 @@ const employeePost = [
         await db.createEmployee(matchedData(req));
         res.sendStatus(200);
     } catch (err) {
-        console.log(err);
         next(err)
     }
 }]
@@ -43,7 +42,6 @@ const employeeListDelete = async(req, res, next) => {
         await db.deleteAllEmployees();
         res.sendStatus(200);
     } catch (err) {
-        console.log(err);
         next(err);
     }
 }
@@ -53,7 +51,6 @@ const employeeDelete = async (req , res, next) => {
         await db.deleteEmployeeByID(req.params.id);
         res.sendStatus(200);
     } catch(err) {
-        console.log(err);
         next(err);
     }
 }
@@ -76,7 +73,6 @@ const employeePut = [
         await db.updateEmployeeById(req.params.id, matchedData(req));
         res.sendStatus(200);
     } catch(err) {
-        console.log(err);
         next(err);
     }
 }
