@@ -1,7 +1,7 @@
 const { createEmployee, getEmployeeByUsername } = require("../db/employeeDb")
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const { validateEmployeePost } = require("../config/input");
+const { validateEmployeePost, validateUsername } = require("../config/input");
 const { validationResult, matchedData } = require("express-validator");
 
 process.loadEnvFile()
@@ -31,10 +31,18 @@ const employeeRegister = [
     }
 }]
 
-const employeeLogin = async (req, res, next) => {
-    const {username, password} = req.body;
+const employeeLogin = [
+    validateUsername, 
+    async (req, res, next) => {
+    const errors = validationResult(req);
+    if(!errors.isEmpty()) {
+        const errorMsg = errors.array()[0].msg;
+        return res.status(400).json({errorMsg});
+    }
     
     try {
+        const {username , password } = matchedData(req);
+        
         const employee = await getEmployeeByUsername(username);
         if(!employee) return res.sendStatus(400);
 
@@ -55,7 +63,7 @@ const employeeLogin = async (req, res, next) => {
         next(err);
     }
 
-}
+}]
 
 
 module.exports = {

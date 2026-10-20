@@ -244,6 +244,14 @@ const validateJobPut = [
 
 ]
 
+const validateUsername = [
+    body("username").notEmpty().withMessage(emptyErrMsg("Username"))
+    .trim(),
+    body("password")
+    .notEmpty().withMessage(emptyErrMsg("Password"))
+    .trim(),
+]
+
 
 
 module.exports = {
@@ -252,5 +260,6 @@ module.exports = {
     validateClientPost,
     validateClientPut,
     validateJobPost,
-    validateJobPut
+    validateJobPut,
+    validateUsername
 }
