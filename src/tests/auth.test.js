@@ -24,9 +24,9 @@ describe("POST /register", () => {
             name: "jamal",
             email: "example@gmail.com",
             role: "USER",
-            phone: "224-546-3333",
+            phone: "2245463333",
             username: "jamal234",
-            password: "dont leak this please"
+            password: "1101JAmal!2"
         })
         .expect(200, done)
     });
