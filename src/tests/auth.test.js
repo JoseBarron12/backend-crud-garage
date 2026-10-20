@@ -16,8 +16,8 @@ beforeEach(async () => {
 });
 
 describe("POST /register", () => {
-    test("POST request to create new employee" , (done) => {
-        request(app)
+    test("POST request to create new employee" , async ()=> {
+        const response = await request(app)
         .post("/auth/register")
         .type("form")
         .send({
@@ -28,7 +28,9 @@ describe("POST /register", () => {
             username: "jamal234",
             password: "1101JAmal!2"
         })
-        .expect(200, done)
+        expect(response.status).toEqual(200);
+        expect(response.body).toHaveProperty("token");
+
     });
 
     test("POST request to create new employee w/ exisiting username", async() => {
