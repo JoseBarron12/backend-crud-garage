@@ -67,7 +67,6 @@ const clientPut = [
         await db.updateClientId(req.params.id, matchedData(req));
         res.sendStatus(200);
     } catch (err) {
-        console.log(err);
         next(err);
     }
 }

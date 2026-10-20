@@ -19,7 +19,6 @@ const employeeRegister = [
         await createEmployee(matchedData(req));
         res.sendStatus(200);
     } catch (err) {
-        console.log(err);
         next(err);
     }
 }]

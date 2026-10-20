@@ -22,5 +22,10 @@ indexRouter.get("/", (req, res) => {
     res.json({text: "hello"});
 })
 
+indexRouter.use((err, req, res, next) => {
+    const errorMsg = err.message;
+    res.status(err.statusCode || 500).json({errorMsg});
+});
+
 
 module.exports = indexRouter;

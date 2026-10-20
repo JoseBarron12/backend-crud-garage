@@ -1,6 +1,6 @@
 const prisma = require("../../lib/prisma");
 const bcrypt = require("bcryptjs");
-
+const { CustomFoundError } = require("../errors/CustomFoundError");
 
 async function getAllEmployees() {
     const employees = await prisma.employee.findMany({
@@ -34,6 +34,10 @@ async function getEmployeeByUsername(username) {
 
 
 async function createEmployee(data) {
+    
+    const findEmployee = await getEmployeeByUsername(data.username);
+    if(findEmployee) throw new CustomFoundError("Username is already in use.");
+    
     const hashpassword = await bcrypt.hash(data.password, 10);
     await prisma.employee.create({
         data: {
