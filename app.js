@@ -4,7 +4,9 @@ const passport = require("passport");
 
 const app = express();
 
-process.loadEnvFile();
+if(process.env != "production") {
+    process.loadEnvFile();
+}
 
 app.use(express.urlencoded({extended: true}));
 

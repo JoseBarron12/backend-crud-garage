@@ -3,7 +3,9 @@ const prisma = require("../../lib/prisma");
 const JwtStrategy = require("passport-jwt").Strategy;
 const ExtractJwt = require("passport-jwt").ExtractJwt;
 
-process.loadEnvFile();
+if(process.env != "production") {
+    process.loadEnvFile();
+}
 
 const opts = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
