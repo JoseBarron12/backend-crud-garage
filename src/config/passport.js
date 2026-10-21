@@ -3,7 +3,7 @@ const prisma = require("../../lib/prisma");
 const JwtStrategy = require("passport-jwt").Strategy;
 const ExtractJwt = require("passport-jwt").ExtractJwt;
 
-if(process.env != "production") {
+if(process.env.NODE_ENV != "production") {
     process.loadEnvFile();
 }
 

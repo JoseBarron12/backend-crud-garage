@@ -1,5 +1,3 @@
-const prisma = require("../../lib/prisma");
-
 async function isAdmin(req, res, next) {
     if(req.user.role === "ADMIN") {
         next();

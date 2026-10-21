@@ -4,7 +4,7 @@ const passport = require("passport");
 
 const app = express();
 
-if(process.env != "production") {
+if(process.env.NODE_ENV != "production") {
     process.loadEnvFile();
 }
 

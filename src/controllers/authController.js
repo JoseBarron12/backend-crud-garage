@@ -4,7 +4,7 @@ const bcrypt = require("bcryptjs");
 const { validateEmployeePost, validateUsername } = require("../config/input");
 const { validationResult, matchedData } = require("express-validator");
 
-if(process.env != "production") {
+if(process.env.NODE_ENV != "production") {
     process.loadEnvFile();
 }
 
