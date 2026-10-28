@@ -9,6 +9,7 @@ if(process.env.NODE_ENV != "production") {
     process.loadEnvFile();
 }
 
+app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
 require("./src/config/passport")(passport);
