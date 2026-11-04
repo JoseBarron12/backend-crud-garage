@@ -14,6 +14,9 @@ indexRouter.use("/auth", authRouter);
 indexRouter.use("/", passport.authenticate("jwt", {session: false})   );
 
 // protected routes
+indexRouter.get("/me", (req, res) => {
+    return res.json({user: req.user})
+});
 indexRouter.use("/employee", employeeRouter);
 indexRouter.use("/client", clientRouter);
 indexRouter.use("/job", jobRouter);
