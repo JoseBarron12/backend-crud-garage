@@ -47,6 +47,9 @@ async function createEmployee(data, isReg = false) {
     const findEmployee = await getEmployeeByUsername(data.username);
     if(findEmployee) throw new CustomFoundError("Username is already in use.");
     
+    const findEmail = await getEmployeeByEmail(data.email);
+    if(findEmail) throw new CustomFoundError("Email is already in use.");
+
     const hashpassword = await bcrypt.hash(data.password, 10);
     const employee = await prisma.employee.create({
         data: {
