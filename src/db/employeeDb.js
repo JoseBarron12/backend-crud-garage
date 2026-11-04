@@ -31,6 +31,16 @@ async function getEmployeeByUsername(username) {
     return employee
 }
 
+async function getEmployeeByEmail(email) {
+    const employee = await prisma.employee.findFirst({
+        where: {
+            email: email
+        },
+    });
+
+    return employee;
+}
+
 
 async function createEmployee(data, isReg = false) {
     
