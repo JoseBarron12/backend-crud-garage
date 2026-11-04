@@ -19,8 +19,11 @@ module.exports = (passport) => {
                 const user = await prisma.employee.findUnique({
                     where: {
                         id: jwt_payload.id,
-                    }
-                })
+                    },
+                    omit : {
+                        hashpassword: true,
+                    },
+                });
 
                 if(user) {
                     return done(null,user);
