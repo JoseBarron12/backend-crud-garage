@@ -18,9 +18,6 @@ indexRouter.use("/employee", employeeRouter);
 indexRouter.use("/client", clientRouter);
 indexRouter.use("/job", jobRouter);
 
-indexRouter.get("/", (req, res) => {
-    res.json({text: "hello"});
-})
 
 indexRouter.use((err, req, res, next) => {
     const errorMsg = err.message;
